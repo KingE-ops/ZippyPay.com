@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZippyPay - Sign Up</title>
+  <style>
+    body {
+      background-color: #000;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #fff;
+    }
+    .signup-container {
+      background: #111;
+      padding: 40px 30px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 20px rgba(255,0,0,0.3);
+      text-align: center;
+    }
+    .signup-container h1 {
+      color: #ff0000;
+      margin-bottom: 30px;
+      animation: fadeInDown 2s ease-out forwards;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .signup-container input {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: #fff;
+      font-size: 16px;
+    }
+    .signup-container button {
+      width: 100%;
+      background: #ff0000;
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .signup-container button:hover {
+      background: #cc0000;
+    }
+    .success-message {
+      color: #00ff00;
+      margin-top: 15px;
+      font-size: 14px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="signup-container">
+  <h1>Create Account</h1>
+  <input type="email" id="signupEmail" placeholder="Enter your email">
+  <input type="password" id="signupPassword" placeholder="Create a password">
+  <button onclick="signUp()">Sign Up</button>
+  <div id="success" class="success-message">Account created! Go to Sign In.</div>
+</div>
+
+<script>
+  function signUp() {
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value.trim();
+    const successDiv = document.getElementById('success');
+
+    if (email && password) {
+      // Save to localStorage
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userPassword', password);
+      successDiv.style.display = "block";
+
+      // Optionally redirect after 2 seconds to signin page
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 2000);
+    } else {
+      alert("Please fill in all fields");
+    }
+  }
+</script>
+
+</body>
+</html>

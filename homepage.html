@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZippyPay - Home</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: #fff;
+    }
+
+    /* Navbar Styling */
+    .navbar {
+      background: #111;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(255, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+
+    .navbar h1 {
+      color: #ff0000;
+      font-size: 24px;
+      font-weight: 700;
+      transition: transform 0.3s;
+    }
+
+    /* Navbar Links */
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #fff;
+      line-height: 40px;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #ff0000;
+    }
+
+    /* Hamburger Menu (Mobile) */
+    .menu-icon {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #ff0000;
+      position: relative;
+      z-index: 1001;
+    }
+
+    /* Animated Hamburger to X */
+    .menu-icon span {
+      display: block;
+      width: 30px;
+      height: 4px;
+      background: #ff0000;
+      margin: 6px 0;
+      transition: all 0.3s ease-in-out;
+      border-radius: 5px;
+    }
+
+    .menu-icon.open span:nth-child(1) {
+      transform: rotate(45deg);
+      transform-origin: top left;
+      position: absolute;
+      top: 0;
+    }
+
+    .menu-icon.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-icon.open span:nth-child(3) {
+      transform: rotate(-45deg);
+      transform-origin: bottom left;
+      position: absolute;
+      bottom: 0;
+    }
+
+    /* Mobile Navigation Styling */
+    @media(max-width: 768px) {
+      .nav-links {
+        position: absolute;
+        top: 70px;
+        right: -300px; /* Initially off-screen */
+        background: #111;
+        flex-direction: column;
+        width: 290px;
+        display: none;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+        transform: perspective(1000px) rotateY(15deg);
+        transition: transform 0.5s ease, right 0.5s ease;
+      }
+
+      .nav-links.open {
+        display: flex;
+        right: 0; /* Slide in */
+        transform: perspective(1000px) rotateY(0deg); /* 3D effect */
+      }
+
+      .menu-icon {
+        display: block;
+      }
+    }
+
+    /* Website Name Animation */
+    .website-name {
+      text-align: center;
+      font-size: 50px;
+      font-weight: bold;
+      color: #ff0000;
+      opacity: 0;
+      animation: fall 2s ease-in-out forwards;
+      margin-top: 100px;
+    }
+
+    @keyframes fall {
+      0% {
+        opacity: 0;
+        transform: translateY(-100px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <h1>ZippyPay</h1>
+  <div class="menu-icon" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <a href="#">Home</a>
+    <a href="#">Wallet</a>
+    <a href="#">Profile</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+</div>
+
+<!-- Animated Website Name -->
+<div class="website-name" id="websiteName">Welcome to ZippyPay</div>
+
+<script>
+  // Protect Homepage
+  if (localStorage.getItem('isLoggedIn') !== "true") {
+    window.location.href = "signin.html";
+  }
+
+  // Navbar toggle for mobile
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+    document.querySelector('.menu-icon').classList.toggle('open');
+  }
+
+  // Logout function
+  function logout() {
+    localStorage.removeItem('isLoggedIn');
+    alert('Logged out successfully!');
+    window.location.href = 'signin.html';
+  }
+</script>
+
+</body>
+</html>

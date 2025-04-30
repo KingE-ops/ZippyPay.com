@@ -205,8 +205,121 @@
     .box3 a{
       color: red;
       text-decoration: none;
-      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serifc;
     }
+
+    .card {
+  border: 2px solid white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 250px;
+  background: #111;
+  color: white;
+}
+
+.trust-section, .how-it-works, .testimonials, .trusted-logos {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.trust-section ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.trust-section li {
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+.how-it-works .steps div {
+  margin: 10px 0;
+  font-size: 1.2em;
+}
+
+.testimonials {
+  margin-top: 60px;
+  text-align: center;
+  position: relative;
+}
+
+.testimonial-slider {
+  max-width: 700px;
+  margin: auto;
+  position: relative;
+  overflow: hidden;
+  height: 120px;
+}
+
+.slide {
+  position: absolute;
+  width: 90%;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  font-style: italic;
+  font-size: 1.2em;
+  padding: 20px;
+  color: #fff;
+  background: #222;
+  border-left: 5px solid red;
+  border-radius: 8px;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+
+.trusted-logos img {
+  width: 60px;
+  margin: 10px;
+  filter: brightness(0) invert(1);
+}
+
+/* ANIMATIONS */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoomIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideIn {
+  0% { transform: translateX(-50px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+/* Animate cards */
+.card {
+  animation: fadeInUp 1s ease forwards;
+  opacity: 0;
+}
+
+/* Animate section titles */
+h2 {
+  animation: zoomIn 1s ease forwards;
+  opacity: 0;
+}
+
+/* Triggered scroll animation (JavaScript-controlled class) */
+.animate {
+  animation: slideIn 1s ease forwards;
+  opacity: 0;
+}
+
+/* Logo hover effect */
+.trusted-logos img:hover {
+  transform: scale(1.2);
+  transition: transform 0.3s ease;
+}
+
   </style>
 </head>
 <body>
@@ -249,11 +362,51 @@
       click on this link below and earn <strong>$0.31</strong>
     </h3>
     <br>
-    <a href="#">Tiktok</a>
+    <a href="https://www.tiktok.com/@fiercewolf7">Tiktok</a>
   </div>
 </div>
 
+ <!-- 🔒 Trust Section -->
+ <section class="trust-section">
+  <h2>Why Trust ZippyPay?</h2>
+  <ul>
+    <li>🔒 Secure and Transparent Payments</li>
+    <li>🌍 Thousands of users worldwide</li>
+    <li>💵 Real-time payout system via PayPal & Crypto</li>
+    <li>⭐ Rated 4.8/5 by active users</li>
+  </ul>
+</section>
+
+<!-- 🧾 How it Works -->
+<section class="how-it-works">
+  <h2>How It Works</h2>
+  <div class="steps">
+    <div>1️⃣ Sign up for free</div>
+    <div>2️⃣ Complete simple tasks or referrals</div>
+    <div>3️⃣ Get paid instantly to your wallet</div>
+  </div>
+</section>
+
+<section class="testimonials">
+    <h2>What Users Are Saying</h2>
+    <div class="testimonial-slider">
+      <div class="slide active">"I made $50 in my first week! Legit and easy to use!" — <strong>Sarah M.</strong></div>
+      <div class="slide">"ZippyPay actually pays — unlike other platforms." — <strong>Daniel O.</strong></div>
+      <div class="slide">"I referred 3 friends and got $10. Fast and secure." — <strong>Kevin A.</strong></div>
+    </div>
+  </section>
+  
+
+<!-- 🔐 Trusted Logos (Optional) -->
+<section class="trusted-logos">
+  <img src="images/paypal.png" alt="PayPal" />
+  <img src="images/bitcoin.png" alt="Bitcoin" />
+  <img src="images/trustpilot.png" alt="TrustPilot" />
+</section>
+
+
 <script>
+
   // Protect Homepage 
   if (localStorage.getItem('isLoggedIn') !== "true") {
     window.location.href = "signin.html";
@@ -271,6 +424,32 @@
     alert('Logged out successfully!');
     window.location.href = 'index.html';
   }
+
+  // Animate elements on scroll
+const animatedSections = document.querySelectorAll('.trust-section, .how-it-works, .testimonials');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('animate');
+    }
+  });
+}, { threshold: 0.2 });
+
+animatedSections.forEach(section => observer.observe(section));
+let slides = document.querySelectorAll('.testimonial-slider .slide');
+let current = 0;
+
+function showNextSlide() {
+slides[current].classList.remove('active');
+current = (current + 1) % slides.length;
+slides[current].classList.add('active');
+}
+
+setInterval(showNextSlide, 4000); // Change every 4 seconds
+
+
+  
 </script>
 
 </body>

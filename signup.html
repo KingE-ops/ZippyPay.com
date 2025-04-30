@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ZippyPay - Sign Up</title>
+  <title>ZippyPay - Sign In</title>
   <style>
     body {
-      background-color: #000;
+      margin: 0;
+      padding: 0;
       font-family: 'Poppins', sans-serif;
+      background-color: #000;
+      color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
-      color: #fff;
     }
-    .signup-container {
+    .signin-container {
       background: #111;
       padding: 40px 30px;
       border-radius: 12px;
@@ -24,7 +25,7 @@
       box-shadow: 0 4px 20px rgba(255,0,0,0.3);
       text-align: center;
     }
-    .signup-container h1 {
+    .signin-container h1 {
       color: #ff0000;
       margin-bottom: 30px;
       animation: fadeInDown 2s ease-out forwards;
@@ -34,8 +35,9 @@
       from { opacity: 0; transform: translateY(-30px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .signup-container input {
-      width: 100%;
+
+    .signin-container input {
+      width: 80%;
       padding: 15px;
       margin: 10px 0;
       border: none;
@@ -44,8 +46,8 @@
       color: #fff;
       font-size: 16px;
     }
-    .signup-container button {
-      width: 100%;
+    .signin-container .button {
+      width: 70%;
       background: #ff0000;
       color: white;
       padding: 15px;
@@ -56,48 +58,86 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .signup-container button:hover {
+    .signin-container .button:hover {
       background: #cc0000;
     }
-    .success-message {
-      color: #00ff00;
+    .error-message {
+      color: #ff4d4d;
       margin-top: 15px;
       font-size: 14px;
       display: none;
+    }
+
+    .but a{
+      width: 70%;
+      background: white;
+      color: red;
+      text-decoration: none;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      margin-top: 20px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-<div class="signup-container">
-  <h1>Create Account</h1>
-  <input type="email" id="signupEmail" placeholder="Enter your email">
-  <input type="password" id="signupPassword" placeholder="Create a password">
-  <button onclick="signUp()">Sign Up</button>
-  <div id="success" class="success-message">Account created! Go to Sign In.</div>
+<div class="signin-container">
+  <h1>ZippyPay</h1>
+  <input type="email" id="email" placeholder="Enter your email">
+  <input type="password" id="password" placeholder="Enter your password">
+  <button class="button" onclick="signIn()">Sign In</button>
+  <div id="error" class="error-message">Incorrect email or password
+    <br>
+    <br>
+    <br>
+    <button class="but"><a href="./signup.html">create an account</a></button>
+    </div>
 </div>
 
 <script>
-  function signUp() {
-    const email = document.getElementById('signupEmail').value.trim();
-    const password = document.getElementById('signupPassword').value.trim();
-    const successDiv = document.getElementById('success');
+  function signIn() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const errorDiv = document.getElementById('error');
 
-    if (email && password) {
-      // Save to localStorage
-      localStorage.setItem('userEmail', email);
-      localStorage.setItem('userPassword', password);
-      successDiv.style.display = "block";
+    // ✅ Example demo login details (can be replaced later):
+    const correctEmail = "admin@zippypay.com";
+    const correctPassword = "123456";
 
-      // Optionally redirect after 2 seconds to signin page
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 2000);
+    if (email === correctEmail && password === correctPassword) {
+      // Login success
+      localStorage.setItem('isLoggedIn', true);
+      localStorage.setItem('walletAmount', 0); // Optional: start fresh wallet
+      window.location.href = 'index.html'; // Redirect to homepage
     } else {
-      alert("Please fill in all fields");
+      // Login failed
+      errorDiv.style.display = "block";
+    }
+  }
+
+  function signIn() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const errorDiv = document.getElementById('error');
+
+    // Fetch stored signup info
+    const storedEmail = localStorage.getItem('userEmail');
+    const storedPassword = localStorage.getItem('userPassword');
+
+    if (email === storedEmail && password === storedPassword) {
+      // Login success
+      localStorage.setItem('isLoggedIn', true);
+      window.location.href = 'homepage.html'; // Redirect to homepage
+    } else {
+      // Login failed
+      errorDiv.style.display = "block";
     }
   }
 </script>
+
 
 </body>
 </html>

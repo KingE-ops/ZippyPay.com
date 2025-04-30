@@ -10,6 +10,7 @@
       font-family: 'Poppins', sans-serif;
       background: #000;
       color: #fff;
+      overflow-x: hidden;
     }
 
     /* Navbar Styling */
@@ -116,6 +117,11 @@
       .menu-icon {
         display: block;
       }
+
+      .boxes{
+        flex-direction: column;
+      }
+
     }
 
     /* Website Name Animation */
@@ -133,6 +139,36 @@
       0% {
         opacity: 0;
         transform: translateY(-100px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .boxes{
+      /* border: 2px solid red; */
+      height: 100%;
+      width: 100%;
+      display: flex;
+      padding: 10px;
+      justify-content: space-evenly;
+    }
+
+    .box1, .box2, .box3{
+      padding: 10px;
+      border: 2px solid white;
+      height: 200px;
+      width: 270px;
+      border-radius: 10px;
+      animation: fall 2s ease-in-out forwards;
+      margin-top: 100px;
+    }
+
+    @keyframes fall {
+      0% {
+        opacity: 0;
+        transform: translateY(-90px);
       }
       100% {
         opacity: 1;
@@ -161,9 +197,24 @@
 
 <!-- Animated Website Name -->
 <div class="website-name" id="websiteName">Welcome to ZippyPay</div>
+<br>
+<br>
+<div class="boxes">
+  <div class="box1">
+
+  </div>
+
+  <div class="box2">
+
+  </div>
+
+  <div class="box3">
+
+  </div>
+</div>
 
 <script>
-  // Protect Homepage
+  // Protect Homepage 
   if (localStorage.getItem('isLoggedIn') !== "true") {
     window.location.href = "signin.html";
   }

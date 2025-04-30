@@ -120,11 +120,15 @@
 
       .boxes{
         flex-direction: column;
-        padding-left: 25px;
+        /* padding-left: 25px; */
+        align-items: center;
         overflow: hidden;
       }
 
-
+      .box1, .box2, .box3{
+        /* width: 100px; */
+        height: 90px;
+      }
     }
 
     /* Website Name Animation */
@@ -157,8 +161,8 @@
     .box1, .box2, .box3{
       padding: 10px;
       border: 2px solid white;
-      height: 200px;
-      width: 290px;
+      height: fit-content;
+      max-width: 230px;
       border-radius: 10px;
       animation: fall 2s ease-in-out forwards;
       margin-top: 100px;
@@ -173,6 +177,35 @@
         opacity: 1;
         transform: translateY(0);
       }
+    }
+
+    .box3 h3{
+      columns: white;
+      font-weight: 200;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .box1 h3{
+      columns: white;
+      font-weight: 200;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .box2 h3{
+      columns: white;
+      font-weight: 200;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .box1 h3 strong{
+      color: red;
+      font-weight: 100;
+    }
+
+    .box3 a{
+      color: red;
+      text-decoration: none;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     }
   </style>
 </head>
@@ -200,15 +233,23 @@
 <br>
 <div class="boxes">
   <div class="box1">
-
+    <h3>
+      Register with <strong> <i>ZippyPay</i> </strong> today to start earning in dollars
+    </h3>
   </div>
 
   <div class="box2">
-
+    <h3>
+      Welcome to the only webpage that pays you for doing simple task 
+    </h3>
   </div>
 
   <div class="box3">
-
+    <h3>
+      click on this link below and earn <strong>$0.31</strong>
+    </h3>
+    <br>
+    <a href="#">Tiktok</a>
   </div>
 </div>
 

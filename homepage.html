@@ -95,7 +95,7 @@
     @media(max-width: 768px) {
       .nav-links {
         position: absolute;
-        top: 70px;
+        top: 100px;
         right: -300px; /* Initially off-screen */
         background: #111;
         flex-direction: column;
@@ -326,14 +326,15 @@ h2 {
 
 <!-- Navbar -->
 <div class="navbar">
-  <h1>ZippyPay</h1>
+  <h1> <i style="color: white;
+  font-weight: 700;">ZippyPay</i> </h1>
   <div class="menu-icon" onclick="toggleMenu()">
     <span></span>
     <span></span>
     <span></span>
   </div>
   <div class="nav-links" id="navLinks">
-    <a href="#">Home</a>
+    <a href="./task.html">Task</a>
     <a href="#">Wallet</a>
     <a href="#">Profile</a>
     <a href="#" onclick="logout()">Logout</a>
@@ -341,7 +342,8 @@ h2 {
 </div>
 
 <!-- Animated Website Name -->
-<div class="website-name" id="websiteName">Welcome to ZippyPay</div>
+<div class="website-name" id="websiteName">Welcome to <i style="color: white;
+font-weight: 900;">ZippyPay</i> </div>
 <br>
 <br>
 <div class="boxes">

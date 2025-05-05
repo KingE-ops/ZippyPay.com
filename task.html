@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker</title>
+    <style>
+        .task-card {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        #progress-bar-container {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 5px;
+        }
+        #progress-bar {
+            height: 20px;
+            width: 0%;
+            background-color: #4caf50;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Task Tracker</h1>
+
+    <div id="taskList"></div>
+
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <script>
+        const userId = 'user123';  // Unique user ID (can be dynamic)
+
+        function completeTask(taskId) {
+            fetch(`https://your-repl-url/complete-task/${userId}/${taskId}`, {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Task completed') {
+                    loadTasks();  // Reload tasks to reflect changes
+                }
+                alert(data.message);
+            })
+            .catch(error => console.error('Error completing task:', error));
+        }
+
+        function loadTasks() {
+            fetch(`https://your-repl-url/tasks/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const taskListDiv = document.getElementById('taskList');
+                    taskListDiv.innerHTML = '';  // Clear previous tasks
+
+                    const tasks = data.tasks;
+                    let completedTasks = 0;
+                    
+                    tasks.forEach(task => {
+                        const taskCard = document.createElement('div');
+                        taskCard.classList.add('task-card');
+                        taskCard.innerHTML = `
+                            <h3>${task.name}</h3>
+                            <p>Status: ${task.completed ? 'Completed' : 'Pending'}</p>
+                            <button onclick="completeTask(${task.id})" ${task.completed ? 'disabled' : ''}>
+                                ${task.completed ? 'Completed' : 'Complete Task'}
+                            </button>
+                        `;
+                        taskListDiv.appendChild(taskCard);
+
+                        if (task.completed) {
+                            completedTasks++;
+                        }
+                    });
+
+                    // Update progress bar
+                    const percentage = (completedTasks / 5) * 100;
+                    document.getElementById('progress-bar').style.width = `${percentage}%`;
+                })
+                .catch(error => console.error('Error loading tasks:', error));
+        }
+
+        // Initial load of tasks
+        loadTasks();
+    </script>
+</body>
+</html>

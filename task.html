@@ -1,93 +1,390 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Tracker</title>
-    <style>
-        .task-card {
-            margin: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        #progress-bar-container {
-            margin-top: 20px;
-            width: 100%;
-            background-color: #f3f3f3;
-            border-radius: 5px;
-        }
-        #progress-bar {
-            height: 20px;
-            width: 0%;
-            background-color: #4caf50;
-            border-radius: 5px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskMaster Pro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      box-sizing: border-box;
+    }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
+  color: #fff;
+  overflow-x: hidden;
+  padding-bottom: 80px;
+}
+
+header {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 1.2rem;
+  text-align: center;
+  border-bottom: 1px solid #444;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+header h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.balance, .progress {
+  font-size: 1.1rem;
+  margin: 0.2rem 0;
+}
+
+.progress-bar {
+  background: #333;
+  border-radius: 6px;
+  height: 10px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  background: #00ff99;
+  height: 100%;
+  width: 0;
+  transition: width 0.3s ease;
+}
+
+.task-container {
+  padding: 1rem;
+}
+
+.task-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #444;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin: 1.2rem 0;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.task-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px #00ffcc55;
+}
+
+.task-card.completed {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.task-card h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.task-card p {
+  font-size: 0.95rem;
+  color: #bbb;
+}
+
+.popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-inner {
+  background: #1f1f1f;
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  max-width: 90%;
+  box-shadow: 0 0 20px #00ffcc55;
+}
+
+.popup-inner button {
+  margin-top: 1rem;
+  background: #00ffcc;
+  color: #000;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background: #111;
+  padding: 0.7rem 0;
+  border-top: 1px solid #333;
+}
+
+.bottom-nav div {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #ccc;
+}
+
+.bottom-nav i {
+  font-size: 1.2rem;
+  margin-bottom: 3px;
+  display: block;
+}
+
+.testimonial-slideshow-container {
+position: relative;
+width: 80%;
+max-width: 700px;
+margin: 2rem auto;
+background-color: #111;
+color: #fff;
+border-radius: 1rem;
+overflow: hidden;
+padding: 2rem;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.testimonial-slide {
+display: flex;
+transition: transform 0.5s ease;
+transform: translateX(0);
+}
+
+.testimonial {
+width: 100%;
+text-align: center;
+padding: 1.5rem;
+border-radius: 1rem;
+box-sizing: border-box;
+}
+
+.testimonial p {
+font-size: 1.1rem;
+font-style: italic;
+}
+
+.testimonial .user-name {
+font-weight: bold;
+margin-top: 1rem;
+}
+
+.nav-buttons {
+display: flex;
+justify-content: space-between;
+position: absolute;
+top: 50%;
+width: 100%;
+padding: 0 2rem;
+transform: translateY(-50%);
+}
+
+.nav-buttons button {
+background-color: rgba(0, 0, 0, 0.5);
+color: white;
+border: none;
+font-size: 2rem;
+padding: 0.5rem;
+cursor: pointer;
+border-radius: 50%;
+transition: background-color 0.3s;
+}
+
+.nav-buttons button\:hover {
+background-color: rgba(0, 0, 0, 0.8);
+}
+
+  </style>
 </head>
 <body>
 
-    <h1>Task Tracker</h1>
+  <header>
+    <h1>🔥 TaskMaster Pro</h1>
+    <div class="balance">Balance: $<span id="balance">0</span></div>
+    <div class="progress">Tasks Completed: <span id="taskCount">0</span>/5</div>
+    <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+  </header>
 
-    <div id="taskList"></div>
+  <div class="task-container" id="taskList"></div>
 
-    <div id="progress-bar-container">
-        <div id="progress-bar"></div>
+  <div class="bottom-nav">
+    <div><i class="fa fa-list"></i> Tasks</div>
+    <div><i class="fa fa-clock"></i> History</div>
+    <div><i class="fa fa-user"></i> Profile</div>
+  </div>
+
+  <div class="popup hidden" id="popup">
+    <div class="popup-inner">
+      <h2>Follow & Like</h2>
+      <p>Please follow <strong>@fiercewolf7</strong> on TikTok and like 5 videos to complete the task.</p>
+      <button onclick="goToTikTok()">Continue</button>
+    </div>
+  </div>
+
+  <div class="testimonial-slideshow-container">
+    <div class="testimonial-slide" id="testimonialSlide">
+      <!-- Testimonials will be injected here dynamically -->
     </div>
 
-    <script>
-        const userId = 'user123';  // Unique user ID (can be dynamic)
+```
+<!-- Navigation buttons -->
+<div class="nav-buttons">
+  <!-- <button id="prevBtn" onclick="moveSlide(-1)">&#10094;</button>
+  <button id="nextBtn" onclick="moveSlide(1)">&#10095;</button> -->
+</div>
+```
 
-        function completeTask(taskId) {
-            fetch(`https://your-repl-url/complete-task/${userId}/${taskId}`, {
-                method: 'POST',
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message === 'Task completed') {
-                    loadTasks();  // Reload tasks to reflect changes
-                }
-                alert(data.message);
-            })
-            .catch(error => console.error('Error completing task:', error));
-        }
+  </div>
 
-        function loadTasks() {
-            fetch(`https://your-repl-url/tasks/${userId}`)
-                .then(response => response.json())
-                .then(data => {
-                    const taskListDiv = document.getElementById('taskList');
-                    taskListDiv.innerHTML = '';  // Clear previous tasks
+  <script>
+    let balance = Number(localStorage.getItem('balance')) || 0;
+    let taskDone = Number(localStorage.getItem('taskDone')) || 0;
+    const taskLimit = 5;
+    const balanceDisplay = document.getElementById('balance');
+    const taskCount = document.getElementById('taskCount');
+    const popup = document.getElementById('popup');
+    const taskList = document.getElementById('taskList');
 
-                    const tasks = data.tasks;
-                    let completedTasks = 0;
-                    
-                    tasks.forEach(task => {
-                        const taskCard = document.createElement('div');
-                        taskCard.classList.add('task-card');
-                        taskCard.innerHTML = `
-                            <h3>${task.name}</h3>
-                            <p>Status: ${task.completed ? 'Completed' : 'Pending'}</p>
-                            <button onclick="completeTask(${task.id})" ${task.completed ? 'disabled' : ''}>
-                                ${task.completed ? 'Completed' : 'Complete Task'}
-                            </button>
-                        `;
-                        taskListDiv.appendChild(taskCard);
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || Array.from({ length: 5 }, (_, i) => ({
+      id: i + 1,
+      title: `Watch and engage with @fiercewolf7`,
+      description: `Follow @fiercewolf7 and like 5 videos to earn $5.`,
+      completed: false
+    }));
 
-                        if (task.completed) {
-                            completedTasks++;
-                        }
-                    });
+    let currentTask = null;
 
-                    // Update progress bar
-                    const percentage = (completedTasks / 5) * 100;
-                    document.getElementById('progress-bar').style.width = `${percentage}%`;
-                })
-                .catch(error => console.error('Error loading tasks:', error));
-        }
+    function loadTasks() {
+      taskList.innerHTML = '';
+      tasks.forEach(task => {
+        const card = document.createElement('div');
+        card.className = 'task-card' + (task.completed ? ' completed' : '');
+        card.innerHTML = `<h3>${task.title}</h3><p>${task.description}</p>`;
+        card.onclick = () => handleTaskClick(task);
+        taskList.appendChild(card);
+      });
+    }
 
-        // Initial load of tasks
-        loadTasks();
-    </script>
+    function handleTaskClick(task) {
+      if (task.completed || taskDone >= taskLimit) return;
+      currentTask = task;
+      popup.classList.remove('hidden');
+    }
+
+    function goToTikTok() {
+      popup.classList.add('hidden');
+      setTimeout(() => {
+        completeTask(currentTask);
+      }, 5000);
+      window.open('https://www.tiktok.com/@fiercewolf7', '_blank');
+    }
+
+    function completeTask(task) {
+      task.completed = true;
+      balance += 5;
+      taskDone += 1;
+      balanceDisplay.textContent = balance;
+      taskCount.textContent = taskDone;
+      updateProgressBar();
+      saveProgress();
+      loadTasks();
+      alert('✅ Task completed! $5 added.');
+    }
+
+    function updateProgressBar() {
+      let bar = document.querySelector('.progress-bar-fill');
+      bar.style.width = `${(taskDone / taskLimit) * 100}%`;
+    }
+
+    function saveProgress() {
+      localStorage.setItem('balance', balance);
+      localStorage.setItem('taskDone', taskDone);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    // Init
+    balanceDisplay.textContent = balance;
+    taskCount.textContent = taskDone;
+    loadTasks();
+    updateProgressBar();
+
+    // Pre-filled testimonials array
+const testimonials = [
+  { name: "John Doe", message: "Amazing website! Easy to use and very user-friendly. Highly recommend!" },
+  { name: "Jane Smith", message: "This is a game-changer for task management. So intuitive and efficient!" },
+  { name: "Mark Johnson", message: "Great platform! Keeps me on track and motivated with tasks." },
+  { name: "Alice Brown", message: "Love the design and functionality. Perfect for anyone looking to stay organized." },
+  { name: "Tom Lee", message: "Incredible tool! It has completely streamlined my workflow." },
+  { name: "Sara White", message: "I’m very impressed with how easy it is to manage tasks here." },
+  { name: "Chris Green", message: "The interface is sleek and very responsive. A pleasure to use." },
+  { name: "Nina King", message: "I’m using it daily for all my personal and work-related tasks. Truly effective!" },
+  { name: "David Clark", message: "Simple yet powerful. Everything I need in one place." },
+  { name: "Emma Turner", message: "Fantastic app! It really keeps me productive, and I love the look and feel." }
+];
+
+// Current slide index
+let currentSlideIndex = 0;
+
+// Function to display the current testimonial
+function displayTestimonial() {
+  const slideContainer = document.getElementById('testimonialSlide');
+  slideContainer.innerHTML = '';  // Clear the previous slide
+
+  // Create a testimonial div
+  const testimonial = testimonials[currentSlideIndex];
+  const testimonialDiv = document.createElement('div');
+  testimonialDiv.className = 'testimonial';
+  testimonialDiv.innerHTML = `
+    <p>"${testimonial.message}"</p>
+    <div class="user-name">- ${testimonial.name}</div>
+  `;
+
+  // Add testimonial to the slide container
+  slideContainer.appendChild(testimonialDiv);
+}
+
+// Function to move to the next or previous slide
+function moveSlide(step) {
+  currentSlideIndex += step;
+
+  if (currentSlideIndex < 0) {
+    currentSlideIndex = testimonials.length - 1;  // Go to the last slide
+  }
+  if (currentSlideIndex >= testimonials.length) {
+    currentSlideIndex = 0;  // Go to the first slide
+  }
+
+  displayTestimonial();  // Update the testimonial display
+}
+
+// Auto-cycle testimonials every 5 seconds
+setInterval(() => {
+  moveSlide(1);
+}, 5000);
+
+// Initialize first testimonial
+displayTestimonial();
+
+  </script>
+
 </body>
 </html>
+

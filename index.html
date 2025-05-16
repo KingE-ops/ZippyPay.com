@@ -102,8 +102,8 @@
     }
     .signup-container button {
       width: 70%;
-      background: #ff00007c;
-      color: white;
+      background: white;
+      color: black;
       padding: 15px;
       border: none;
       border-radius: 8px;
@@ -142,6 +142,7 @@
   <h1>Create Account</h1>
   <input type="email" id="signupEmail" placeholder="Enter your email">
   <input type="password" id="signupPassword" placeholder="Create a password">
+  <input type="tel" id="phonenumber" placeholder="+234 -xxx-xxx-xxx-xx">
   <button onclick="signUp()">create account</button>
   <div id="success" class="success-message">Account created! Go to Sign In.</div>
 </div>
@@ -150,6 +151,7 @@
   function signUp() {
     const email = document.getElementById('signupEmail').value.trim();
     const password = document.getElementById('signupPassword').value.trim();
+    const tel = document.getElementById('phonenumber').value.trim();
     const successDiv = document.getElementById('success');
 
     if (email && password) {

@@ -5,6 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ZippyPay - Sign In</title>
   <style>
+
+    
+    /* Preloader */
+    #preloader {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      flex-direction: row;
+      gap: 10px;
+    }
+    .bounce-letter {
+      font-size:3em;
+      font-weight: bold;
+      color: #fff;
+      animation: bounce 1s infinite ease-in-out, shine 2s infinite linear;
+      display: inline-block;
+    }
+    .bounce-letter:nth-child(1) { animation-delay: 0s; }
+    .bounce-letter:nth-child(2) { animation-delay: 0.1s; }
+    .bounce-letter:nth-child(3) { animation-delay: 0.2s; }
+    .bounce-letter:nth-child(4) { animation-delay: 0.3s; }
+    .bounce-letter:nth-child(5) { animation-delay: 0.4s; }
+    .bounce-letter:nth-child(6) { animation-delay: 0.5s; }
+    .bounce-letter:nth-child(7) { animation-delay: 0.6s; }
+    .bounce-letter:nth-child(8) { animation-delay: 0.7s; }
+    .bounce-letter:nth-child(9) { animation-delay: 0.8s; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    @keyframes shine {
+      0% { color: #f39c12; }
+      50% { color: #e91e63; }
+      100% { color: #00bcd4; }
+    }
+
+    /* Main content */
+    #mainContent {
+      display: none;
+      padding: 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -84,6 +138,18 @@
 </head>
 <body>
 
+    <div id="preloader">
+    <span class="bounce-letter">Z</span>
+    <span class="bounce-letter">I</span>
+    <span class="bounce-letter">P</span>
+    <span class="bounce-letter">P</span>
+    <span class="bounce-letter">Y</span>
+    <span class="bounce-letter">-</span>
+    <span class="bounce-letter">P</span>
+    <span class="bounce-letter">A</span>
+    <span class="bounce-letter">Y</span>
+  </div>
+
 <div class="signin-container">
   <h1>ZippyPay</h1>
   <input type="email" id="email" placeholder="Enter your email">
@@ -136,6 +202,16 @@
       errorDiv.style.display = "block";
     }
   }
+
+  
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.getElementById('preloader').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        document.body.style.overflow = 'auto';
+        loadTasks();
+      }, 5000);
+    });
 </script>
 
 

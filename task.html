@@ -1,390 +1,246 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TaskMaster Pro</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <title>Zippy Pay Tasks</title>
   <style>
     * {
       margin: 0;
+      padding: 0;
       box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
     }
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
-  color: #fff;
-  overflow-x: hidden;
-  padding-bottom: 80px;
-}
+    body {
+      background: #111;
+      overflow: hidden;
+      color: white;
+    }
 
-header {
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
-  padding: 1.2rem;
-  text-align: center;
-  border-bottom: 1px solid #444;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
+    /* Preloader */
+    #preloader {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      flex-direction: row;
+      gap: 10px;
+    }
+    .bounce-letter {
+      font-size:3em;
+      font-weight: bold;
+      color: #fff;
+      animation: bounce 1s infinite ease-in-out, shine 2s infinite linear;
+      display: inline-block;
+    }
+    .bounce-letter:nth-child(1) { animation-delay: 0s; }
+    .bounce-letter:nth-child(2) { animation-delay: 0.1s; }
+    .bounce-letter:nth-child(3) { animation-delay: 0.2s; }
+    .bounce-letter:nth-child(4) { animation-delay: 0.3s; }
+    .bounce-letter:nth-child(5) { animation-delay: 0.4s; }
+    .bounce-letter:nth-child(6) { animation-delay: 0.5s; }
+    .bounce-letter:nth-child(7) { animation-delay: 0.6s; }
+    .bounce-letter:nth-child(8) { animation-delay: 0.7s; }
+    .bounce-letter:nth-child(9) { animation-delay: 0.8s; }
 
-header h1 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
 
-.balance, .progress {
-  font-size: 1.1rem;
-  margin: 0.2rem 0;
-}
+    @keyframes shine {
+      0% { color: #f39c12; }
+      50% { color: #e91e63; }
+      100% { color: #00bcd4; }
+    }
 
-.progress-bar {
-  background: #333;
-  border-radius: 6px;
-  height: 10px;
-  margin-top: 10px;
-  overflow: hidden;
-}
+    /* Main content */
+    #mainContent {
+      display: none;
+      padding: 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-.progress-bar-fill {
-  background: #00ff99;
-  height: 100%;
-  width: 0;
-  transition: width 0.3s ease;
-}
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: #4b56d2;
+      color: white;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    }
+    .progress-container {
+      width: 200px;
+      height: 20px;
+      background: #ddd;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #00c853;
+      transition: width 0.3s ease-in-out;
+    }
 
-.task-container {
-  padding: 1rem;
-}
-
-.task-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid #444;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  margin: 1.2rem 0;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  position: relative;
-}
-
-.task-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 20px #00ffcc55;
-}
-
-.task-card.completed {
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-.task-card h3 {
-  margin-bottom: 0.5rem;
-  font-size: 1.2rem;
-}
-
-.task-card p {
-  font-size: 0.95rem;
-  color: #bbb;
-}
-
-.popup {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.popup-inner {
-  background: #1f1f1f;
-  padding: 2rem;
-  border-radius: 1rem;
-  text-align: center;
-  max-width: 90%;
-  box-shadow: 0 0 20px #00ffcc55;
-}
-
-.popup-inner button {
-  margin-top: 1rem;
-  background: #00ffcc;
-  color: #000;
-  padding: 0.7rem 1.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.hidden {
-  display: none;
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  background: #111;
-  padding: 0.7rem 0;
-  border-top: 1px solid #333;
-}
-
-.bottom-nav div {
-  text-align: center;
-  font-size: 0.8rem;
-  color: #ccc;
-}
-
-.bottom-nav i {
-  font-size: 1.2rem;
-  margin-bottom: 3px;
-  display: block;
-}
-
-.testimonial-slideshow-container {
-position: relative;
-width: 80%;
-max-width: 700px;
-margin: 2rem auto;
-background-color: #111;
-color: #fff;
-border-radius: 1rem;
-overflow: hidden;
-padding: 2rem;
-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.testimonial-slide {
-display: flex;
-transition: transform 0.5s ease;
-transform: translateX(0);
-}
-
-.testimonial {
-width: 100%;
-text-align: center;
-padding: 1.5rem;
-border-radius: 1rem;
-box-sizing: border-box;
-}
-
-.testimonial p {
-font-size: 1.1rem;
-font-style: italic;
-}
-
-.testimonial .user-name {
-font-weight: bold;
-margin-top: 1rem;
-}
-
-.nav-buttons {
-display: flex;
-justify-content: space-between;
-position: absolute;
-top: 50%;
-width: 100%;
-padding: 0 2rem;
-transform: translateY(-50%);
-}
-
-.nav-buttons button {
-background-color: rgba(0, 0, 0, 0.5);
-color: white;
-border: none;
-font-size: 2rem;
-padding: 0.5rem;
-cursor: pointer;
-border-radius: 50%;
-transition: background-color 0.3s;
-}
-
-.nav-buttons button\:hover {
-background-color: rgba(0, 0, 0, 0.8);
-}
-
+    .tasks {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .task-card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      color: #000;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transform: perspective(600px) rotateX(0deg);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .task-card:hover {
+      transform: perspective(600px) rotateX(5deg);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+    .task-card.completed {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      z-index: 1000;
+      display: none;
+      color: #000;
+    }
+    .popup h2 {
+      margin-bottom: 10px;
+    }
+    .popup button {
+      padding: 10px 20px;
+      border: none;
+      background: #4b56d2;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-
-  <header>
-    <h1>🔥 TaskMaster Pro</h1>
-    <div class="balance">Balance: $<span id="balance">0</span></div>
-    <div class="progress">Tasks Completed: <span id="taskCount">0</span>/5</div>
-    <div class="progress-bar"><div class="progress-bar-fill"></div></div>
-  </header>
-
-  <div class="task-container" id="taskList"></div>
-
-  <div class="bottom-nav">
-    <div><i class="fa fa-list"></i> Tasks</div>
-    <div><i class="fa fa-clock"></i> History</div>
-    <div><i class="fa fa-user"></i> Profile</div>
+  <div id="preloader">
+    <span class="bounce-letter">Z</span>
+    <span class="bounce-letter">I</span>
+    <span class="bounce-letter">P</span>
+    <span class="bounce-letter">P</span>
+    <span class="bounce-letter">Y</span>
+    <span class="bounce-letter">-</span>
+    <span class="bounce-letter">P</span>
+    <span class="bounce-letter">A</span>
+    <span class="bounce-letter">Y</span>
   </div>
 
-  <div class="popup hidden" id="popup">
-    <div class="popup-inner">
-      <h2>Follow & Like</h2>
-      <p>Please follow <strong>@fiercewolf7</strong> on TikTok and like 5 videos to complete the task.</p>
-      <button onclick="goToTikTok()">Continue</button>
+  <div id="mainContent">
+    <header>
+      <h2 id="welcomeMessage">Welcome</h2>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </header>
+
+    <section class="tasks" id="taskContainer">
+      <!-- Tasks will be injected here -->
+    </section>
+
+    <div class="popup" id="taskPopup">
+      <h2>Complete Task?</h2>
+      <p>You’ll be taken to TikTok. Come back after engaging.</p>
+      <button onclick="confirmTask()">Go</button>
     </div>
-  </div>
-
-  <div class="testimonial-slideshow-container">
-    <div class="testimonial-slide" id="testimonialSlide">
-      <!-- Testimonials will be injected here dynamically -->
-    </div>
-
-```
-<!-- Navigation buttons -->
-<div class="nav-buttons">
-  <!-- <button id="prevBtn" onclick="moveSlide(-1)">&#10094;</button>
-  <button id="nextBtn" onclick="moveSlide(1)">&#10095;</button> -->
-</div>
-```
-
   </div>
 
   <script>
-    let balance = Number(localStorage.getItem('balance')) || 0;
-    let taskDone = Number(localStorage.getItem('taskDone')) || 0;
-    const taskLimit = 5;
-    const balanceDisplay = document.getElementById('balance');
-    const taskCount = document.getElementById('taskCount');
-    const popup = document.getElementById('popup');
-    const taskList = document.getElementById('taskList');
+    const username = localStorage.getItem('loggedInUser') || 'Guest';
+    const tasks = [
+      { id: 1, title: 'Follow @fiercewolf7 on TikTok', url: 'https://www.tiktok.com/@fiercewolf7', completed: false },
+      { id: 2, title: 'Like a video from @fiercewolf7', url: 'https://www.tiktok.com/@fiercewolf7/video/xyz', completed: false },
+      { id: 3, title: 'Comment on @fiercewolf7’s video', url: 'https://www.tiktok.com/@fiercewolf7', completed: false },
+      { id: 4, title: 'Share a video from @fiercewolf7', url: 'https://www.tiktok.com/@fiercewolf7', completed: false },
+      { id: 5, title: 'Revisit and like 2 more videos from @fiercewolf7', url: 'https://www.tiktok.com/@fiercewolf7', completed: false },
 
-    let tasks = JSON.parse(localStorage.getItem('tasks')) || Array.from({ length: 5 }, (_, i) => ({
-      id: i + 1,
-      title: `Watch and engage with @fiercewolf7`,
-      description: `Follow @fiercewolf7 and like 5 videos to earn $5.`,
-      completed: false
-    }));
+      { id: 6, title: 'like 2 more videos from @fiercewolf7', url: 'https://www.tiktok.com/@fiercewolf7', completed: false },
+    ];
 
-    let currentTask = null;
+    let completedTasks = Number(localStorage.getItem(username + '_completedTasks')) || 0;
 
     function loadTasks() {
-      taskList.innerHTML = '';
-      tasks.forEach(task => {
+      document.getElementById('welcomeMessage').textContent = `Welcome, ${username}`;
+      const taskContainer = document.getElementById('taskContainer');
+      taskContainer.innerHTML = '';
+      tasks.forEach((task) => {
+        task.completed = JSON.parse(localStorage.getItem(username + '_task_' + task.id)) || false;
         const card = document.createElement('div');
         card.className = 'task-card' + (task.completed ? ' completed' : '');
-        card.innerHTML = `<h3>${task.title}</h3><p>${task.description}</p>`;
-        card.onclick = () => handleTaskClick(task);
-        taskList.appendChild(card);
+        card.innerHTML = `<h3>${task.title}</h3>`;
+        if (!task.completed) {
+          card.addEventListener('click', () => showPopup(task));
+        }
+        taskContainer.appendChild(card);
       });
+      updateProgress();
     }
 
-    function handleTaskClick(task) {
-      if (task.completed || taskDone >= taskLimit) return;
+    function showPopup(task) {
       currentTask = task;
-      popup.classList.remove('hidden');
+      document.getElementById('taskPopup').style.display = 'block';
     }
 
-    function goToTikTok() {
-      popup.classList.add('hidden');
+    function confirmTask() {
+      document.getElementById('taskPopup').style.display = 'none';
+      window.open(currentTask.url, '_blank');
       setTimeout(() => {
         completeTask(currentTask);
       }, 5000);
-      window.open('https://www.tiktok.com/@fiercewolf7', '_blank');
     }
 
     function completeTask(task) {
       task.completed = true;
-      balance += 5;
-      taskDone += 1;
-      balanceDisplay.textContent = balance;
-      taskCount.textContent = taskDone;
-      updateProgressBar();
-      saveProgress();
+      localStorage.setItem(username + '_task_' + task.id, true);
+      completedTasks++;
+      localStorage.setItem(username + '_completedTasks', completedTasks);
+      alert('✅ Task completed!');
       loadTasks();
-      alert('✅ Task completed! $5 added.');
     }
 
-    function updateProgressBar() {
-      let bar = document.querySelector('.progress-bar-fill');
-      bar.style.width = `${(taskDone / taskLimit) * 100}%`;
+    function updateProgress() {
+      const progressBar = document.getElementById('progressBar');
+      progressBar.style.width = `${(completedTasks / tasks.length) * 100}%`;
     }
 
-    function saveProgress() {
-      localStorage.setItem('balance', balance);
-      localStorage.setItem('taskDone', taskDone);
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-
-    // Init
-    balanceDisplay.textContent = balance;
-    taskCount.textContent = taskDone;
-    loadTasks();
-    updateProgressBar();
-
-    // Pre-filled testimonials array
-const testimonials = [
-  { name: "John Doe", message: "Amazing website! Easy to use and very user-friendly. Highly recommend!" },
-  { name: "Jane Smith", message: "This is a game-changer for task management. So intuitive and efficient!" },
-  { name: "Mark Johnson", message: "Great platform! Keeps me on track and motivated with tasks." },
-  { name: "Alice Brown", message: "Love the design and functionality. Perfect for anyone looking to stay organized." },
-  { name: "Tom Lee", message: "Incredible tool! It has completely streamlined my workflow." },
-  { name: "Sara White", message: "I’m very impressed with how easy it is to manage tasks here." },
-  { name: "Chris Green", message: "The interface is sleek and very responsive. A pleasure to use." },
-  { name: "Nina King", message: "I’m using it daily for all my personal and work-related tasks. Truly effective!" },
-  { name: "David Clark", message: "Simple yet powerful. Everything I need in one place." },
-  { name: "Emma Turner", message: "Fantastic app! It really keeps me productive, and I love the look and feel." }
-];
-
-// Current slide index
-let currentSlideIndex = 0;
-
-// Function to display the current testimonial
-function displayTestimonial() {
-  const slideContainer = document.getElementById('testimonialSlide');
-  slideContainer.innerHTML = '';  // Clear the previous slide
-
-  // Create a testimonial div
-  const testimonial = testimonials[currentSlideIndex];
-  const testimonialDiv = document.createElement('div');
-  testimonialDiv.className = 'testimonial';
-  testimonialDiv.innerHTML = `
-    <p>"${testimonial.message}"</p>
-    <div class="user-name">- ${testimonial.name}</div>
-  `;
-
-  // Add testimonial to the slide container
-  slideContainer.appendChild(testimonialDiv);
-}
-
-// Function to move to the next or previous slide
-function moveSlide(step) {
-  currentSlideIndex += step;
-
-  if (currentSlideIndex < 0) {
-    currentSlideIndex = testimonials.length - 1;  // Go to the last slide
-  }
-  if (currentSlideIndex >= testimonials.length) {
-    currentSlideIndex = 0;  // Go to the first slide
-  }
-
-  displayTestimonial();  // Update the testimonial display
-}
-
-// Auto-cycle testimonials every 5 seconds
-setInterval(() => {
-  moveSlide(1);
-}, 5000);
-
-// Initialize first testimonial
-displayTestimonial();
-
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.getElementById('preloader').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        document.body.style.overflow = 'auto';
+        loadTasks();
+      }, 5000);
+    });
   </script>
-
 </body>
 </html>
-

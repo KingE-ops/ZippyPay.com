@@ -276,6 +276,70 @@
     display: none;
 }
 
+style>
+    .testimonial-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      padding: 0 1rem;
+    }
+    .testimonial-card {
+      background: rgba(255 255 255 / 0.85);
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      backdrop-filter: saturate(180%) blur(10px);
+      padding: 2rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: box-shadow 0.3s ease;
+    }
+    .testimonial-card:hover {
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+    }
+    .testimonial-text {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #222;
+      margin-bottom: 1.6rem;
+      flex-grow: 1;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .testimonial-author img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #0ff;
+      box-shadow: 0 2px 8px rgba(0, 255, 255, 0.3);
+    }
+    .testimonial-author strong {
+      font-weight: 700;
+      color: #0cc;
+    }
+    .testimonial-author small {
+      font-weight: 400;
+      color: #555;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 480px) {
+      .testimonial-text {
+        font-size: 1rem;
+      }
+      .testimonial-author img {
+        width: 40px;
+        height: 40px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -339,7 +403,7 @@
 <section id="earn">
   <h2 class="section-heading">Massive Earning Potential</h2>
   <div class="info-row">
-    <img src="./image/pexels-ali-dashti-506667798-16865582.jpg" alt="Earnings">
+    <img src="./image/pexels-karolina-grabowska-4386370.jpg" alt="Earnings">
     <div class="info-text">
       <p>Thousands of Nigerians have already earned over ₦100,000 through ZippyPay. Whether you're a student, worker, or business owner, ZippyPay gives you the freedom to earn on your terms.</p>
     </div>
@@ -412,6 +476,51 @@
 <!-- CTA -->
 <a href="./signin.html" class="floating-cta">Join Now</a>
 
+<section id="testimonials" style="background: #f9fafb; padding: 4rem 1rem;">
+  <h2 style="text-align: center; font-family: 'Poppins', sans-serif; font-weight: 700; color: #111; margin-bottom: 3rem; font-size: 2.5rem;">
+    What Our Users Say
+  </h2>
+
+  <div class="testimonial-container">
+    <article class="testimonial-card">
+      <p class="testimonial-text">
+        "Zippy Pay has revolutionized how I handle my daily transactions — fast, secure, and intuitive!"
+      </p>
+      <footer class="testimonial-author">
+        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User avatar" />
+        <div>
+          <strong>Jessica Lee</strong><br />
+          <small>Freelance Designer</small>
+        </div>
+      </footer>
+    </article>
+
+    <article class="testimonial-card">
+      <p class="testimonial-text">
+        "The instant payment confirmations and low fees make Zippy Pay my go-to app for business."
+      </p>
+      <footer class="testimonial-author">
+        <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="User avatar" />
+        <div>
+          <strong>Michael Johnson</strong><br />
+          <small>Small Business Owner</small>
+        </div>
+      </footer>
+    </article>
+
+    <article class="testimonial-card">
+      <p class="testimonial-text">
+        "Seamless user experience and excellent customer support. Highly recommended!"
+      </p>
+      <footer class="testimonial-author">
+        <img src="https://randomuser.me/api/portraits/women/52.jpg" alt="User avatar" />
+        <div>
+          <strong>Sophia Martinez</strong><br />
+          <small>Entrepreneur</small>
+        </div>
+      </footer>
+    </article>
+  </div>
 <!-- Footer -->
 <footer>
   &copy; 2025 ZippyPay. All Rights Reserved.

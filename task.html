@@ -2,248 +2,513 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zippy Pay Tasks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zippy Pay - Task Page</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    body {
-      background: #111;
-      overflow: hidden;
-      color: white;
-    }
 
+    
     /* Preloader */
     #preloader {
-      position: fixed;
-      /* bottom: 70px; */
-      width: 100vw;
-      height: 100vh;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      flex-direction: row;
-      gap: 10px;
+      position: fixed; width: 100%; height: 100vh; background: rgba(255, 255, 255, 0.365); display: flex;
+      backdrop-filter: blur(5px);
+      align-items: center; justify-content: center; z-index: 9999;
     }
-    .bounce-letter {
-      font-size: 2.5em;
-      font-weight: bold;
-      position: relative;
-      bottom: 70px;
-      color: #fff;
-      animation: bounce 1s infinite ease-in-out, shine 2s infinite linear;
-      display: inline-block;
+    .loader span {
+      font-size: 40px; color: black; animation: bounce 1s infinite;
+      display: inline-block; margin: 0 5px;
+      animation-delay: calc(0.1s * var(--i));
     }
-    .bounce-letter:nth-child(1) { animation-delay: 0s; }
-    .bounce-letter:nth-child(2) { animation-delay: 0.1s; }
-    .bounce-letter:nth-child(3) { animation-delay: 0.2s; }
-    .bounce-letter:nth-child(4) { animation-delay: 0.3s; }
-    .bounce-letter:nth-child(5) { animation-delay: 0.4s; }
-    .bounce-letter:nth-child(6) { animation-delay: 0.5s; }
-    .bounce-letter:nth-child(7) { animation-delay: 0.6s; }
-    .bounce-letter:nth-child(8) { animation-delay: 0.7s; }
-    .bounce-letter:nth-child(9) { animation-delay: 0.8s; }
-
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
+      50% { transform: translateY(-20px); }
+    }
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: rgba(204, 201, 201, 0.465);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    @keyframes shine {
-      0% { color: #f39c12; }
-      50% { color: #e91e63; }
-      100% { color: #00bcd4; }
-    }
-
-    /* Main content */
-    #mainContent {
-      display: none;
-      padding: 20px;
-      animation: fadeIn 1s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    header {
+    /* Navbar */
+    nav.navbar {
+      position: sticky;
+      top: 0;
+      background: rgba(0, 96, 115, 0.416);
+      backdrop-filter: blur(10px);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 20px;
-      background: #4b56d2;
-      color: white;
-      border-radius: 0 0 20px 20px;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+      padding: 1rem 2rem;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgb(0 0 0 / 0.3);
     }
-    .progress-container {
-      width: 200px;
-      height: 20px;
-      background: #ddd;
-      border-radius: 20px;
-      overflow: hidden;
+    nav .logo {
+      font-weight: 900;
+      font-size: 1.9rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      user-select: none;
     }
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: #00c853;
-      transition: width 0.3s ease-in-out;
+    ul.nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+    ul.nav-menu li a {
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+      padding: 0.25rem 0.5rem;
+      border-radius: 5px;
+    }
+    ul.nav-menu li a:hover {
+      background: #21bf73;
+      color: #fff;
     }
 
-    .tasks {
-      margin-top: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-    .task-card {
-      background: white;
-      border-radius: 15px;
-      padding: 20px;
-      color: #000;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      transform: perspective(600px) rotateX(0deg);
-      transition: transform 0.3s, box-shadow 0.3s;
-      cursor: pointer;
-    }
-    .task-card:hover {
-      transform: perspective(600px) rotateX(5deg);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-    }
-    .task-card.completed {
-      opacity: 0.5;
-      pointer-events: none;
-    }
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 20px 30px;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      z-index: 1000;
+    /* Hamburger Button */
+    button.hamburger {
       display: none;
-      color: #000;
-    }
-    .popup h2 {
-      margin-bottom: 10px;
-    }
-    .popup button {
-      padding: 10px 20px;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 28px;
+      height: 24px;
+      background: transparent;
       border: none;
-      background: #4b56d2;
-      color: white;
-      border-radius: 10px;
       cursor: pointer;
+      padding: 0;
+      z-index: 1100;
     }
+    button.hamburger .bar {
+      width: 100%;
+      height: 3px;
+      background-color: #fff;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    button.hamburger.active .bar:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    button.hamburger.active .bar:nth-child(2) {
+      opacity: 0;
+    }
+    button.hamburger.active .bar:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* Hide nav menu on mobile initially */
+    @media (max-width: 768px) {
+      ul.nav-menu {
+        position: fixed;
+        top: 80px;
+        right: 0;
+        color: #333;
+        background: rgba(240, 242, 242, 0.745);
+        flex-direction: column;
+        width: 220px;
+        padding: 1rem;
+        border-radius: 10px;
+        display: none;
+        /* border-radius: 0 0 0 12px; */
+        /* height: calc(100% - 60px); */
+        overflow-y: auto;
+        /* box-shadow: -3px 0 8px rgb(0 0 0 / 0.4); */
+        backdrop-filter: blur(50px);
+      }
+      ul.nav-menu.open {
+        display: flex;
+      }
+      button.hamburger {
+        display: flex;
+      }
+    }
+
+    /* HEADER IMAGE SECTION */
+    header#home {
+      position: relative;
+      height: 350px;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      font-weight: 900;
+      font-size: 3rem;
+      letter-spacing: 6px;
+      user-select: none;
+      text-shadow:
+        2px 2px 6px rgba(0,0,0,0.7),
+        -2px -2px 6px rgba(0,0,0,0.7);
+    }
+    header#home::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 100%);
+      z-index: 0;
+    }
+    header#home > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* MAIN CONTENT */
+    main {
+      padding: 2rem;
+      max-width: 960px;
+      margin: 0 auto 4rem;
+      background: rgba(255 255 255 / 0.1);
+      border-radius: 12px;
+      backdrop-filter: saturate(180%) blur(20px);
+      box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
+    }
+
+    /* Earnings Display */
+    #earnings {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: #333;
+      text-shadow: 1px 1px 6px white;
+    }
+
+    /* TASKS CONTAINER */
+    #tasks {
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+    }
+
+    /* TASK CARD */
+    .task {
+      background: rgba(255 255 255 / 0.15);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      backdrop-filter: saturate(150%) blur(10px);
+      transition: background-color 0.3s ease;
+    }
+    .task:hover {
+      background: rgba(255 255 255 / 0.25);
+    }
+
+    .task h3 {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #06d6a0;
+      user-select: none;
+    }
+
+    /* Progress Bar Container */
+    .progress-bar {
+      background: #333;
+      border-radius: 30px;
+      height: 16px;
+      overflow: hidden;
+      box-shadow: inset 0 0 8px rgb(0 0 0 / 0.5);
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #06d6a0, #1b9aaa);
+      border-radius: 30px 0 0 30px;
+      transition: width 0.5s ease;
+    }
+
+    /* Start Task Button */
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+    button.start-task {
+      background: #118ab2;
+      border: none;
+      color: white;
+      padding: 0.5rem 1.2rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      box-shadow: 0 3px 6px rgb(0 0 0 / 0.2);
+    }
+    button.start-task:hover:not(:disabled) {
+      background: #0a5f7a;
+    }
+    button.start-task:disabled {
+      background: #555;
+      cursor: default;
+    }
+
+    /* Withdrawal Button */
+    #withdraw-btn {
+      display: block;
+      margin: 2rem auto 0;
+      background: #ef476f;
+      border: none;
+      color: white;
+      font-weight: 800;
+      padding: 0.75rem 3rem;
+      font-size: 1.3rem;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgb(239 71 111 / 0.7);
+      transition: background-color 0.3s ease;
+    }
+    #withdraw-btn:hover {
+      background: #b21e43;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      header#home {
+        font-size: 2rem;
+        height: 240px;
+        letter-spacing: 3px;
+        padding: 0 1rem;
+      }
+      main {
+        padding: 1.2rem 1rem;
+      }
+      .nav-menu {
+        width: 180px;
+      }
+      button.start-task {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+      }
+      #withdraw-btn {
+        width: 100%;
+        font-size: 1.1rem;
+      }
+    }
+
+    
+.slow{
+    display: none;
+}
   </style>
 </head>
 <body>
+
   <div id="preloader">
-    <span class="bounce-letter">Z</span>
-    <span class="bounce-letter">I</span>
-    <span class="bounce-letter">P</span>
-    <span class="bounce-letter">P</span>
-    <span class="bounce-letter">Y</span>
-    <span class="bounce-letter">-</span>
-    <span class="bounce-letter">P</span>
-    <span class="bounce-letter">A</span>
-    <span class="bounce-letter">Y</span>
+  <div class="loader">
+    <span style="--i:1">Z</span>
+    <span style="--i:2">I</span>
+    <span style="--i:3">P</span>
+    <span style="--i:4">P</span>
+    <span style="--i:5">Y</span>
+    <span style="--i:6">P</span>
+    <span style="--i:7">A</span>
+    <span style="--i:8">Y</span>
   </div>
+</div>
 
-  <div id="mainContent">
-    <header>
-      <h2 id="welcomeMessage">Welcome</h2>
-      <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
-    </header>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo" tabindex="0">ZIPPY PAY</div>
 
-    <section class="tasks" id="taskContainer">
-      <!-- Tasks will be injected here -->
-    </section>
+  <!-- Hamburger Button -->
+  <button id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu" class="hamburger">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
 
-    <div class="popup" id="taskPopup">
-      <h2>Complete Task?</h2>
-      <p>You’ll be taken to TikTok. Come back after engaging.</p>
-      <button onclick="confirmTask()">Go</button>
-    </div>
-  </div>
+  <!-- Nav Menu -->
+  <ul id="nav-menu" class="nav-menu" role="menu">
+    <li><a href="#home" role="menuitem">Home</a></li>
+    <li><a href="#tasks" role="menuitem">Tasks</a></li>
+    <li><a href="#withdraw-section" role="menuitem">Withdraw</a></li>
+    <li><a href="#contact" role="menuitem">Contact</a></li>
+  </ul>
+</nav>
 
-  <script>
-    const username = localStorage.getItem('loggedInUser') || 'Guest';
-    const tasks = [
-      { id: 1, title: 'Follow @fiercewolf7 on TikTok', url: 'https://www.tiktok.com/@fiercewolf7', completed: false },
-      { id: 2, title: 'Like a video from @fiercewolf7', url: 'https://www.tiktok.com/@fiercewolf7/video/xyz', completed: false },
-      { id: 3, title: 'Comment on @fiercewolf7’s video', url: 'https://www.tiktok.com/@fiercewolf7', completed: false },
-      { id: 4, title: 'Share a video from @fiercewolf7', url: 'https://www.tiktok.com/@fiercewolf7', completed: false },
-      { id: 5, title: 'Revisit and like 2 more videos from @fiercewolf7', url: 'https://www.tiktok.com/@fiercewolf7', completed: false },
 
-      { id: 6, title: 'like 2 more videos from @fiercewolf7', url: 'https://www.tiktok.com/@fiercewolf7', completed: false },
-    ];
+</nav> <!-- HEADER IMAGE WITH OVERLAY --> <header id="home" role="banner" aria-label="Company banner image with name"> ZIPPY PAY </header> <main> <!-- Live Earnings Display --> <div id="earnings" aria-live="polite" aria-atomic="true"> Total Earnings: $0.00 </div>
 
-    let completedTasks = Number(localStorage.getItem(username + '_completedTasks')) || 0;
+<!-- Tasks List -->
+<section id="tasks" aria-label="List of available earning tasks">
+  <!-- Tasks will be inserted here by JavaScript -->
+</section>
 
-    function loadTasks() {
-      document.getElementById('welcomeMessage').textContent = `Welcome, ${username}`;
-      const taskContainer = document.getElementById('taskContainer');
-      taskContainer.innerHTML = '';
-      tasks.forEach((task) => {
-        task.completed = JSON.parse(localStorage.getItem(username + '_task_' + task.id)) || false;
-        const card = document.createElement('div');
-        card.className = 'task-card' + (task.completed ? ' completed' : '');
-        card.innerHTML = `<h3>${task.title}</h3>`;
-        if (!task.completed) {
-          card.addEventListener('click', () => showPopup(task));
-        }
-        taskContainer.appendChild(card);
-      });
-      updateProgress();
-    }
+<!-- Withdraw Section -->
+<section id="withdraw-section" style="margin-top: 3rem; text-align: center;">
+  <button id="withdraw-btn" aria-label="Withdraw earnings">Withdraw Earnings</button>
+</section>
+</main> <footer id="contact" style="text-align:center; padding:2rem; font-size:0.9rem; color:#eee;"> <p>Contact us: support@zippypay.com | &copy; 2025 Zippy Pay</p> </footer> 
 
-    function showPopup(task) {
-      currentTask = task;
-      document.getElementById('taskPopup').style.display = 'block';
-    }
 
-    function confirmTask() {
-      document.getElementById('taskPopup').style.display = 'none';
-      window.open(currentTask.url, '_blank');
-      setTimeout(() => {
-        completeTask(currentTask);
-      }, 5000);
-    }
+<div class="slow">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/yJg-Y5byMMw?si=K7WbELmtgqOKUxEd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-    function completeTask(task) {
-      task.completed = true;
-      localStorage.setItem(username + '_task_' + task.id, true);
-      completedTasks++;
-      localStorage.setItem(username + '_completedTasks', completedTasks);
-      alert('✅ Task completed!');
-      loadTasks();
-    }
+    <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/yJg-Y5byMMw?si=K7WbELmtgqOKUxEd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+</div>
 
-    function updateProgress() {
-      const progressBar = document.getElementById('progressBar');
-      progressBar.style.width = `${(completedTasks / tasks.length) * 100}%`;
-    }
+<script>
 
-    window.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        document.getElementById('preloader').style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
-        document.body.style.overflow = 'auto';
-        loadTasks();
-      }, 5000);
+    window.addEventListener("load", () => {
+    document.getElementById("preloader").style.display = "none";
+  });
+
+(() => {
+  // ======= Data =======
+  const tasks = [
+    { id: 2, title: "Follow Our TikTok User", reward: 1.00, url: 'https://www.tiktok.com/@yourtiktokuser' },
+    { id: 3, title: "Follow Our TikTok User", reward: 1.00, url: 'https://www.tiktok.com/@yourtiktokuser' },
+    { id: 4, title: "Follow Our TikTok User", reward: 1.00, url: 'https://www.tiktok.com/@yourtiktokuser' },
+    { id: 5, title: "Follow Our TikTok User", reward: 1.00, url: 'https://www.tiktok.com/@yourtiktokuser' }
+    // Add more tasks here
+  ];
+
+  // ======= State =======
+  let totalEarnings = 0;
+  const COMPLETED_TASKS_KEY = 'completedTasks';
+  const NOTIFY_KEY = 'notifyCompletedTasks';
+
+  // Load completed tasks and notify list from localStorage
+  let completedTasks = JSON.parse(localStorage.getItem(COMPLETED_TASKS_KEY)) || [];
+  let notifyTasks = JSON.parse(localStorage.getItem(NOTIFY_KEY)) || [];
+
+  // DOM elements
+  const tasksContainer = document.getElementById('tasks');
+  const earningsDisplay = document.getElementById('earnings');
+  const withdrawBtn = document.getElementById('withdraw-btn');
+  const hamburger = document.getElementById('hamburger');
+  const navMenu = document.getElementById('nav-menu');
+
+  // Render tasks with button disabling if completed
+  function renderTasks() {
+    tasksContainer.innerHTML = '';
+    tasks.forEach(task => {
+      const isCompleted = completedTasks.includes(task.id);
+      const taskEl = document.createElement('div');
+      taskEl.className = 'task';
+      taskEl.innerHTML = `
+        <h3>${task.title}</h3>
+        <button class="start-task" ${isCompleted ? 'disabled' : ''}>
+          ${isCompleted ? 'Completed' : 'Start Task'}
+        </button>
+      `;
+
+      if (!isCompleted) {
+        taskEl.querySelector('button').addEventListener('click', () => {
+          completeTaskOnLeave(task.id);
+          window.location.href = task.url;
+        });
+      }
+
+      tasksContainer.appendChild(taskEl);
     });
-  </script>
-</body>
-</html>
+  }
+
+  // Calculate total earnings from completed tasks
+  function calculateEarnings() {
+    totalEarnings = completedTasks.reduce((sum, id) => {
+      const t = tasks.find(task => task.id === id);
+      return t ? sum + t.reward : sum;
+    }, 0);
+  }
+
+  // Update earnings display
+  function updateEarnings() {
+    earningsDisplay.textContent = `Total Earnings: $${totalEarnings.toFixed(2)}`;
+  }
+
+  // Mark task completed immediately on leaving
+  function completeTaskOnLeave(taskId) {
+    if (!completedTasks.includes(taskId)) {
+      completedTasks.push(taskId);
+      localStorage.setItem(COMPLETED_TASKS_KEY, JSON.stringify(completedTasks));
+
+      notifyTasks.push(taskId);
+      localStorage.setItem(NOTIFY_KEY, JSON.stringify(notifyTasks));
+
+      calculateEarnings();
+      updateEarnings();
+    }
+  }
+
+  // Show popup notification for tasks completed while user was away
+  function showReturnNotifications() {
+    if (notifyTasks.length === 0) return;
+
+    notifyTasks.forEach(taskId => {
+      const task = tasks.find(t => t.id === taskId);
+      if (task) {
+        alert(`Congrats! You earned $${task.reward.toFixed(2)} for completing the task: "${task.title}"`);
+      }
+    });
+
+    notifyTasks = [];
+    localStorage.setItem(NOTIFY_KEY, JSON.stringify(notifyTasks));
+  }
+
+  // Withdraw earnings
+  function withdrawEarnings() {
+    if (totalEarnings <= 0) {
+      alert('You have no earnings to withdraw yet!');
+      return;
+    }
+    alert(`You have successfully withdrawn $${totalEarnings.toFixed(2)}!`);
+    completedTasks = [];
+    notifyTasks = [];
+    localStorage.removeItem(COMPLETED_TASKS_KEY);
+    localStorage.removeItem(NOTIFY_KEY);
+    calculateEarnings();
+    updateEarnings();
+    renderTasks();
+  }
+
+  // Hamburger menu toggle for mobile nav
+  function toggleMobileNav() {
+    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', String(!expanded));
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('open');
+  }
+
+  // Close mobile nav on nav link click
+  function closeMobileNav() {
+    if (navMenu.classList.contains('open')) {
+      navMenu.classList.remove('open');
+      hamburger.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  // ======= Initialization =======
+  calculateEarnings();
+  updateEarnings();
+  renderTasks();
+  showReturnNotifications();
+
+  // Event Listeners
+  withdrawBtn.addEventListener('click', withdrawEarnings);
+  hamburger.addEventListener('click', toggleMobileNav);
+  navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMobileNav);
+  });
+})();
+</script>
+
+
+
+ </body>
+  </html> ```

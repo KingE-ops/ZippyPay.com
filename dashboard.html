@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sign Up with OTP & 3D Dashboard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #121212;
+    color: #eee;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .container {
+    background: #1f1f1f;
+    padding: 2.5rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #0f0f0f;
+    width: 360px;
+    position: relative;
+    z-index: 1;
+    transition: filter 0.3s ease;
+  }
+  .blurred {
+    filter: blur(5px) brightness(0.7);
+    pointer-events: none;
+    user-select: none;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+  }
+  label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #ccc;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 1.3rem;
+    border-radius: 8px;
+    border: none;
+    background: #2c2c2c;
+    color: #eee;
+    font-size: 1rem;
+    transition: background 0.3s;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    background: #444;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    background: #0ff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #121212;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background: #00e6e6;
+  }
+  .msg {
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 600;
+    height: 22px;
+  }
+  .link {
+    margin-top: 1.4rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  .link a {
+    color: #0ff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .link a:hover {
+    text-decoration: underline;
+  }
+
+  /* OTP modal overlay */
+  #otpModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1f1f1f;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #0ff;
+    width: 320px;
+    padding: 2rem 2.5rem;
+    z-index: 10;
+    text-align: center;
+  }
+  #otpModal h3 {
+    margin-bottom: 1.2rem;
+  }
+  #otpModal input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border: none;
+    background: #2c2c2c;
+    color: #eee;
+    letter-spacing: 4px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  #otpModal button {
+    padding: 12px;
+    width: 100%;
+    background: #0ff;
+    color: #121212;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+  #otpModal button:hover {
+    background: #00e6e6;
+  }
+  #otpMsg {
+    height: 22px;
+    color: #f33;
+    font-weight: 600;
+  }
+
+  /* 3D animated dashboard popup */
+  #dashboardPopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 320px;
+    padding: 2rem 2.5rem;
+    background: linear-gradient(135deg, #0ff, #08b);
+    color: #121212;
+    font-weight: 700;
+    font-size: 1.3rem;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 0 30px #0ff;
+    transform-style: preserve-3d;
+    transform: perspective(600px) rotateY(0deg);
+    z-index: 20;
+    user-select: none;
+    animation: rotateIn3D 1.2s ease forwards;
+  }
+
+  @keyframes rotateIn3D {
+    0% {
+      opacity: 0;
+      transform: perspective(600px) rotateY(90deg);
+    }
+    100% {
+      opacity: 1;
+      transform: perspective(600px) rotateY(0deg);
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="signUpContainer">
+  <h2>Create Your Account</h2>
+  <form id="signUpForm">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required placeholder="Enter your username" />
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required placeholder="Enter your email" />
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required placeholder="Enter your password" />
+
+    <button type="submit">Sign Up</button>
+  </form>
+  <div class="msg" id="signUpMsg"></div>
+  <div class="link">Already have an account? <a href="login.html">Login here</a></div>
+</div>
+
+<!-- OTP Modal -->
+<div id="otpModal">
+  <h3>Enter OTP Code</h3>
+  <input type="text" id="otpInput" maxlength="6" placeholder="6-digit code" />
+  <div id="otpMsg"></div>
+  <button id="verifyOtpBtn">Verify OTP</button>
+</div>
+
+<!-- 3D Dashboard Popup -->
+<div id="dashboardPopup"></div>
+
+<script>
+  const signUpForm = document.getElementById('signUpForm');
+  const signUpMsg = document.getElementById('signUpMsg');
+  const otpModal = document.getElementById('otpModal');
+  const otpInput = document.getElementById('otpInput');
+  const otpMsg = document.getElementById('otpMsg');
+  const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+  const signUpContainer = document.getElementById('signUpContainer');
+  const dashboardPopup = document.getElementById('dashboardPopup');
+
+  let generatedOTP = '';
+  let currentUser = null;
+
+  function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  }
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  // Save user in localStorage
+  function saveUser(user) {
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    users.push(user);
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+
+  // Check if user exists by username or email
+  function userExists(username, email) {
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    return users.some(u => u.username === username || u.email === email);
+  }
+
+  signUpForm.addEventListener('submit', e => {
+    e.preventDefault();
+    signUpMsg.textContent = '';
+    otpMsg.textContent = '';
+    otpInput.value = '';
+
+    const username = signUpForm.username.value.trim();
+    const email = signUpForm.email.value.trim().toLowerCase();
+    const password = signUpForm.password.value;
+
+    if (username.length < 3) {
+      signUpMsg.textContent = 'Username must be at least 3 characters.';
+      return;
+    }
+    if (!isValidEmail(email)) {
+      signUpMsg.textContent = 'Please enter a valid email.';
+      return;
+    }
+    if (password.length < 6) {
+      signUpMsg.textContent = 'Password must be at least 6 characters.';
+      return;
+    }
+    if (userExists(username, email)) {
+      signUpMsg.textContent = 'Username or Email alreadyexists.';
+return;
+}
+// Generate OTP and show modal
+generatedOTP = generateOTP();
+console.log('Generated OTP:', generatedOTP); // For demo, show OTP in console
+currentUser = { username, email, password };
+
+// Show OTP modal & blur background
+otpModal.style.display = 'block';
+signUpContainer.classList.add('blurred');
+otpInput.focus();
+});
+
+verifyOtpBtn.addEventListener('click', () => {
+const enteredOtp = otpInput.value.trim();
+if (enteredOtp === generatedOTP) {
+// Save user & close OTP modal
+saveUser(currentUser);
+otpModal.style.display = 'none';
+signUpContainer.classList.remove('blurred');
+ // Show dashboard popup with 3D animation & redirect
+  dashboardPopup.textContent = `Welcome, ${currentUser.username}! Redirecting...`;
+  dashboardPopup.style.display = 'block';
+
+  setTimeout(() => {
+    dashboardPopup.style.display = 'none';
+    // Redirect to user's personalized homepage
+    // For demo, just redirect to homepage.html?user=username
+    window.location.href = `homepage.html?user=${encodeURIComponent(currentUser.username)}`;
+  }, 3000);
+} else {
+  otpMsg.textContent = 'Invalid OTP, please try again.';
+}
+});
+
+// Allow Enter key to verify OTP
+otpInput.addEventListener('keyup', e => {
+if (e.key === 'Enter') {
+verifyOtpBtn.click();
+}
+});
+</script>
+
+</body> 
+</html>

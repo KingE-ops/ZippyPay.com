@@ -1,186 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ZippyPay - Sign Up</title>
-  <style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Login with OTP - Stylish Auth</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #121212;
+    color: #eee;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .container {
+    background: #1f1f1f;
+    padding: 2.5rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #0f0f0f;
+    width: 320px;
+    position: relative;
+    z-index: 1;
+    transition: filter 0.3s ease;
+  }
+  .blurred {
+    filter: blur(5px) brightness(0.7);
+    pointer-events: none;
+    user-select: none;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+  }
+  label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #ccc;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 1.3rem;
+    border-radius: 8px;
+    border: none;
+    background: #2c2c2c;
+    color: #eee;
+    font-size: 1rem;
+    transition: background 0.3s;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    background: #444;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    background: #0ff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #121212;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background: #00e6e6;
+  }
+  .msg {
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 600;
+    height: 22px;
+  }
+  .link {
+    margin-top: 1.4rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  .link a {
+    color: #0ff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .link a:hover {
+    text-decoration: underline;
+  }
 
-
-   /* Preloader */
-    #preloader {
-      position: fixed;
-      width: 100vw;
-      height: 100vh;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      flex-direction: row;
-      gap: 10px;
-    }
-    .bounce-letter {
-      font-size: 2.5em;
-      font-weight: bold;
-       position: relative;
-      bottom: 70px;
-      color: #fff;
-      animation: bounce 1s infinite ease-in-out, shine 2s infinite linear;
-      display: inline-block;
-    }
-    .bounce-letter:nth-child(1) { animation-delay: 0s; }
-    .bounce-letter:nth-child(2) { animation-delay: 0.1s; }
-    .bounce-letter:nth-child(3) { animation-delay: 0.2s; }
-    .bounce-letter:nth-child(4) { animation-delay: 0.3s; }
-    .bounce-letter:nth-child(5) { animation-delay: 0.4s; }
-    .bounce-letter:nth-child(6) { animation-delay: 0.5s; }
-    .bounce-letter:nth-child(7) { animation-delay: 0.6s; }
-    .bounce-letter:nth-child(8) { animation-delay: 0.7s; }
-    .bounce-letter:nth-child(9) { animation-delay: 0.8s; }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
-
-    @keyframes shine {
-      0% { color: rgb(157, 24, 24); }
-      50% { color: white; }
-      100% { color: #00bcd4; }
-    }
-
-    /* Main content */
-    #mainContent {
-      display: none;
-      padding: 20px;
-      animation: fadeIn 1s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    body {
-      background: url(./image/pexels-tima-miroshnichenko-6266638.jpg);
-      background-position: center;
-      background-size: cover;
-      font-family: 'Poppins', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      color: #fff;
-    }
-    .signup-container {
-      background: rgba(255, 255, 255, 0.338);
-      backdrop-filter: blur(10px);
-      padding: 40px 30px;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 400px;
-      /* box-shadow: 0 4px 20px rgba(0, 217, 255, 0.422); */
-      text-align: center;
-    }
-    .signup-container h1 {
-      color: white;
-      margin-bottom: 30px;
-      animation: fadeInDown 2s ease-out forwards;
-    }
-
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .signup-container input {
-      width: 80%;
-      padding: 15px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 8px;
-      background: white;
-      color: black;
-      font-size: 16px;
-    }
-    .signup-container button {
-      width: 70%;
-      background: white;
-      color: black;
-      padding: 15px;
-      border: none;
-      border-radius: 8px;
-      font-size: 18px;
-      margin-top: 20px;
-      cursor: pointer;
-      transition: background 0.5s;
-    }
-    .signup-container button:hover {
-      background: rgba(0, 251, 255, 0.427);
-      color: white;
-    }
-    .success-message {
-      color: #00ff00;
-      margin-top: 15px;
-      font-size: 14px;
-      display: none;
-    }
-  </style>
+  /* OTP modal overlay */
+  #otpModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1f1f1f;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #0ff;
+    width: 320px;
+    padding: 2rem 2.5rem;
+    z-index: 10;
+    text-align: center;
+  }
+  #otpModal h3 {
+    margin-bottom: 1.2rem;
+  }
+  #otpModal input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border: none;
+    background: #2c2c2c;
+    color: #eee;
+    letter-spacing: 4px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  #otpModal button {
+    padding: 12px;
+    width: 100%;
+    background: #0ff;
+    color: #121212;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+  #otpModal button:hover {
+    background: #00e6e6;
+  }
+  #otpMsg {
+    height: 22px;
+    color: #f33;
+    font-weight: 600;
+  }
+</style>
 </head>
 <body>
 
-      <div id="preloader">
-    <span class="bounce-letter">Z</span>
-    <span class="bounce-letter">I</span>
-    <span class="bounce-letter">P</span>
-    <span class="bounce-letter">P</span>
-    <span class="bounce-letter">Y</span>
-    <span class="bounce-letter">-</span>
-    <span class="bounce-letter">P</span>
-    <span class="bounce-letter">A</span>
-    <span class="bounce-letter">Y</span>
-  </div>
+<div class="container" id="loginContainer">
+  <h2>Login to Your Account</h2>
+  <form id="loginForm">
+    <label for="usernameOrEmail">Username or Email</label>
+    <input type="text" id="usernameOrEmail" required placeholder="Username or Email" />
+    
+    <label for="password">Password</label>
+    <input type="password" id="password" required placeholder="Password" />
+    
+    <button type="submit">Login</button>
+  </form>
+  <div class="msg" id="loginMsg"></div>
+  <div class="link">Don't have an account? <a href="signup.html">Sign up</a></div>
+</div>
 
-  
-<div class="signup-container">
-  <h1>Create Account</h1>
-  <input type="email" id="signupEmail" placeholder="Enter your email">
-  <input type="password" id="signupPassword" placeholder="Create a password">
-  <input type="tel" id="phonenumber" placeholder="+234 -xxx-xxx-xxx-xx">
-  <button onclick="signUp()">create account</button>
-  <div id="success" class="success-message">Account created! Go to Sign In.</div>
+<!-- OTP Modal -->
+<div id="otpModal">
+  <h3>Enter OTP Code</h3>
+  <input type="text" id="otpInput" maxlength="6" placeholder="6-digit code" />
+  <div id="otpMsg"></div>
+  <button id="verifyOtpBtn">Verify OTP</button>
 </div>
 
 <script>
-  function signUp() {
-    const email = document.getElementById('signupEmail').value.trim();
-    const password = document.getElementById('signupPassword').value.trim();
-    const tel = document.getElementById('phonenumber').value.trim();
-    const successDiv = document.getElementById('success');
+  const loginForm = document.getElementById('loginForm');
+  const loginMsg = document.getElementById('loginMsg');
+  const otpModal = document.getElementById('otpModal');
+  const otpInput = document.getElementById('otpInput');
+  const otpMsg = document.getElementById('otpMsg');
+  const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+  const loginContainer = document.getElementById('loginContainer');
 
-    if (email && password) {
-      // Save to localStorage
-      localStorage.setItem('userEmail', email);
-      localStorage.setItem('userPassword', password);
-      successDiv.style.display = "block";
+  let generatedOTP = '';
 
-      // Optionally redirect after 2 seconds to signin page
-      setTimeout(() => {
-        window.location.href = "signup.html";
-      }, 2000);
-    } else {
-      alert("Please fill in all fields");
-    }
+  // Helper: Generate 6-digit OTP
+  function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
   }
 
-   window.addEventListener('DOMContentLoaded', () => {
+  loginForm.addEventListener('submit', e => {
+    e.preventDefault();
+    loginMsg.textContent = '';
+
+    const usernameOrEmail = loginForm.usernameOrEmail.value.trim().toLowerCase();
+    const password = loginForm.password.value.trim();
+
+    // Get users from localStorage
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+    // Find user by username or email
+    const user = users.find(u => 
+      u.username.toLowerCase() === usernameOrEmail || 
+      u.email.toLowerCase() === usernameOrEmail
+    );
+
+   if(!user) {
+  loginMsg.textContent = 'Account not found. Please sign up first.';
+  return;
+}
+
+    if(user.password !== password) {
+      loginMsg.textContent = 'Incorrect password.';
+      return;
+    }
+
+    // Valid login, generate OTP
+    generatedOTP = generateOTP();
+    console.log('Generated OTP (for demo):', generatedOTP);
+    alert('Your OTP code is: ' + generatedOTP);
+
+    // Show OTP modal & blur background
+    otpModal.style.display = 'block';
+    loginContainer.classList.add('blurred');
+
+    // Clear OTP input and messages
+    otpInput.value = '';
+    otpMsg.textContent = '';
+  });
+
+  verifyOtpBtn.addEventListener('click', () => {
+    const enteredOTP = otpInput.value.trim();
+    if(enteredOTP === generatedOTP) {
+      otpMsg.style.color = '#0f0';
+      otpMsg.textContent = 'OTP verified! Logging you in...';
+
+      // Remove blur and hide modal
+      loginContainer.classList.remove('blurred');
+      otpModal.style.display = 'none';
+
+      // Save logged in user in localStorage for dashboard/homepage use
+      const usernameOrEmail = loginForm.usernameOrEmail.value.trim().toLowerCase();
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const user = users.find(u => u.username.toLowerCase() === usernameOrEmail || u.email.toLowerCase() === usernameOrEmail);
+
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+      // Welcome alert then redirect to homepage
+      alert(`Welcome, ${user.username}! Redirecting to your homepage...`);
       setTimeout(() => {
-        document.getElementById('preloader').style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
-        document.body.style.overflow = 'auto';
-        loadTasks();
-      }, 5000);
-    });
+        // Redirect to homepage with username query param
+        window.location.href = `one.html?user=${encodeURIComponent(user.username)}`;
+      }, 2000);
+
+    } else {
+      otpMsg.style.color = '#f33';
+      otpMsg.textContent = 'Invalid OTP. Try again.';
+    }
+  });
+
 </script>
 
 </body>

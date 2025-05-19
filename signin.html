@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up - Stylish Auth</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #121212;
+      color: #eee;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+       /* Preloader */
+    #preloader {
+      position: fixed; width: 100%; height: 100vh; background: white; display: flex;
+      align-items: center; justify-content: center; z-index: 9999;
+    }
+    .loader span {
+      font-size: 40px; color: black; animation: bounce 1s infinite;
+      display: inline-block; margin: 0 5px;
+      animation-delay: calc(0.1s * var(--i));
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    .container {
+      background: #1f1f1f;
+      padding: 2.5rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #0f0f0f;
+      width: 340px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 1.3rem;
+      border-radius: 8px;
+      border: none;
+      background: #2c2c2c;
+      color: #eee;
+      font-size: 1rem;
+    }
+    input:focus {
+      outline: none;
+      background: #444;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0ff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #121212;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #00e6e6;
+    }
+    .msg {
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: 600;
+      height: 24px;
+    }
+    .link {
+      margin-top: 1.2rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    .link a {
+      color: #0ff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .link a:hover {
+      text-decoration: underline;
+    }
+
+    .slow{
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Preloader -->
+<div id="preloader">
+  <div class="loader">
+    <span style="--i:1">Z</span>
+    <span style="--i:2">I</span>
+    <span style="--i:3">P</span>
+    <span style="--i:4">P</span>
+    <span style="--i:5">Y</span>
+    <span style="--i:6">P</span>
+    <span style="--i:7">A</span>
+    <span style="--i:8">Y</span>
+  </div>
+</div>
+  <div class="container">
+    <h2>Create Your Account</h2>
+    <form id="signupForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" required placeholder="Choose a username" />
+      
+      <label for="email">Email</label>
+      <input type="email" id="email" required placeholder="Your email address" />
+      
+      <label for="password">Password</label>
+      <input type="password" id="password" required placeholder="Create a password" />
+      
+      <button type="submit">Sign Up</button>
+    </form>
+    <div class="msg" id="signupMsg"></div>
+    <div class="link">Already have an account? <a href="login.html">Log in</a></div>
+  </div>
+
+  <div class="slow">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/yJg-Y5byMMw?si=K7WbELmtgqOKUxEd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/yJg-Y5byMMw?si=K7WbELmtgqOKUxEd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+  <script>
+    const signupForm = document.getElementById('signupForm');
+    const signupMsg = document.getElementById('signupMsg');
+
+    signupForm.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const username = signupForm.username.value.trim();
+      const email = signupForm.email.value.trim().toLowerCase();
+      const password = signupForm.password.value.trim();
+
+      let users = JSON.parse(localStorage.getItem('users') || '[]');
+
+      // Check if user already exists
+      const exists = users.some(user => user.username === username || user.email === email);
+      if (exists) {
+        signupMsg.textContent = 'Username or email already exists.';
+        signupMsg.style.color = '#f33';
+        return;
+      }
+
+      const newUser = { username, email, password };
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+
+      signupMsg.textContent = 'Account created! Redirecting to login...';
+      signupMsg.style.color = '#0f0';
+
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 2000);
+    });
+
+      // Preloader
+  window.addEventListener("load", () => {
+    document.getElementById("preloader").style.display = "none";
+  });
+
+  </script>
+</body>
+</html>
+

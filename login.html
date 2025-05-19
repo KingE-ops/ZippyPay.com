@@ -1,188 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sign Up - Stylish Auth</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #121212;
-      color: #eee;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Login with OTP - Stylish Auth</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #121212;
+    color: #eee;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .container {
+    background: #1f1f1f;
+    padding: 2.5rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #0f0f0f;
+    width: 320px;
+    position: relative;
+    z-index: 1;
+    transition: filter 0.3s ease;
+  }
+  .blurred {
+    filter: blur(5px) brightness(0.7);
+    pointer-events: none;
+    user-select: none;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+  }
+  label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #ccc;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 1.3rem;
+    border-radius: 8px;
+    border: none;
+    background: #2c2c2c;
+    color: #eee;
+    font-size: 1rem;
+    transition: background 0.3s;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    background: #444;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    background: #0ff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #121212;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background: #00e6e6;
+  }
+  .msg {
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 600;
+    height: 22px;
+  }
+  .link {
+    margin-top: 1.4rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  .link a {
+    color: #0ff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .link a:hover {
+    text-decoration: underline;
+  }
 
-       /* Preloader */
-    #preloader {
-      position: fixed; width: 100%; height: 100vh; background: #000; display: flex;
-      align-items: center; justify-content: center; z-index: 9999;
-    }
-    .loader span {
-      font-size: 40px; color: #fff; animation: bounce 1s infinite;
-      display: inline-block; margin: 0 5px;
-      animation-delay: calc(0.1s * var(--i));
-    }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
-    }
-    .container {
-      background: #1f1f1f;
-      padding: 2.5rem 3rem;
-      border-radius: 12px;
-      box-shadow: 0 0 15px #0f0f0f;
-      width: 340px;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      font-weight: 600;
-    }
-    label {
-      display: block;
-      margin-bottom: 0.4rem;
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: #ccc;
-    }
-    input {
-      width: 100%;
-      padding: 10px 12px;
-      margin-bottom: 1.3rem;
-      border-radius: 8px;
-      border: none;
-      background: #2c2c2c;
-      color: #eee;
-      font-size: 1rem;
-    }
-    input:focus {
-      outline: none;
-      background: #444;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #0ff;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #121212;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #00e6e6;
-    }
-    .msg {
-      margin-top: 1rem;
-      text-align: center;
-      font-weight: 600;
-      height: 24px;
-    }
-    .link {
-      margin-top: 1.2rem;
-      text-align: center;
-      font-size: 0.9rem;
-    }
-    .link a {
-      color: #0ff;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .link a:hover {
-      text-decoration: underline;
-    }
-
-    .slow{
-      display: none;
-    }
-  </style>
+  /* OTP modal overlay */
+  #otpModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1f1f1f;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #0ff;
+    width: 320px;
+    padding: 2rem 2.5rem;
+    z-index: 10;
+    text-align: center;
+  }
+  #otpModal h3 {
+    margin-bottom: 1.2rem;
+  }
+  #otpModal input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border: none;
+    background: #2c2c2c;
+    color: #eee;
+    letter-spacing: 4px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  #otpModal button {
+    padding: 12px;
+    width: 100%;
+    background: #0ff;
+    color: #121212;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+  #otpModal button:hover {
+    background: #00e6e6;
+  }
+  #otpMsg {
+    height: 22px;
+    color: #f33;
+    font-weight: 600;
+  }
+</style>
 </head>
 <body>
 
-  <!-- Preloader -->
-<div id="preloader">
-  <div class="loader">
-    <span style="--i:1">Z</span>
-    <span style="--i:2">I</span>
-    <span style="--i:3">P</span>
-    <span style="--i:4">P</span>
-    <span style="--i:5">Y</span>
-    <span style="--i:6">P</span>
-    <span style="--i:7">A</span>
-    <span style="--i:8">Y</span>
-  </div>
+<div class="container" id="loginContainer">
+  <h2>Login to Your Account</h2>
+  <form id="loginForm">
+    <label for="usernameOrEmail">Username or Email</label>
+    <input type="text" id="usernameOrEmail" required placeholder="Username or Email" />
+    
+    <label for="password">Password</label>
+    <input type="password" id="password" required placeholder="Password" />
+    
+    <button type="submit">Login</button>
+  </form>
+  <div class="msg" id="loginMsg"></div>
+  <div class="link">Don't have an account? <a href="signup.html">Sign up</a></div>
 </div>
-  <div class="container">
-    <h2>Create Your Account</h2>
-    <form id="signupForm">
-      <label for="username">Username</label>
-      <input type="text" id="username" required placeholder="Choose a username" />
-      
-      <label for="email">Email</label>
-      <input type="email" id="email" required placeholder="Your email address" />
-      
-      <label for="password">Password</label>
-      <input type="password" id="password" required placeholder="Create a password" />
-      
-      <button type="submit">Sign Up</button>
-    </form>
-    <div class="msg" id="signupMsg"></div>
-    <div class="link">Already have an account? <a href="login.html">Log in</a></div>
-  </div>
 
-  <div class="slow">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/yJg-Y5byMMw?si=K7WbELmtgqOKUxEd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/yJg-Y5byMMw?si=K7WbELmtgqOKUxEd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<!-- OTP Modal -->
+<div id="otpModal">
+  <h3>Enter OTP Code</h3>
+  <input type="text" id="otpInput" maxlength="6" placeholder="6-digit code" />
+  <div id="otpMsg"></div>
+  <button id="verifyOtpBtn">Verify OTP</button>
 </div>
-  <script>
-    const signupForm = document.getElementById('signupForm');
-    const signupMsg = document.getElementById('signupMsg');
 
-    signupForm.addEventListener('submit', e => {
-      e.preventDefault();
+<script>
+  const loginForm = document.getElementById('loginForm');
+  const loginMsg = document.getElementById('loginMsg');
+  const otpModal = document.getElementById('otpModal');
+  const otpInput = document.getElementById('otpInput');
+  const otpMsg = document.getElementById('otpMsg');
+  const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+  const loginContainer = document.getElementById('loginContainer');
 
-      const username = signupForm.username.value.trim();
-      const email = signupForm.email.value.trim().toLowerCase();
-      const password = signupForm.password.value.trim();
+  let generatedOTP = '';
 
-      let users = JSON.parse(localStorage.getItem('users') || '[]');
+  // Helper: Generate 6-digit OTP
+  function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  }
 
-      // Check if user already exists
-      const exists = users.some(user => user.username === username || user.email === email);
-      if (exists) {
-        signupMsg.textContent = 'Username or email already exists.';
-        signupMsg.style.color = '#f33';
-        return;
-      }
+  loginForm.addEventListener('submit', e => {
+    e.preventDefault();
+    loginMsg.textContent = '';
 
-      const newUser = { username, email, password };
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
+    const usernameOrEmail = loginForm.usernameOrEmail.value.trim().toLowerCase();
+    const password = loginForm.password.value.trim();
 
-      signupMsg.textContent = 'Account created! Redirecting to login...';
-      signupMsg.style.color = '#0f0';
+    // Get users from localStorage
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
 
-      setTimeout(() => {
-        window.location.href = 'login.html';
-      }, 2000);
-    });
+    // Find user by username or email
+    const user = users.find(u => 
+      u.username.toLowerCase() === usernameOrEmail || 
+      u.email.toLowerCase() === usernameOrEmail
+    );
 
-      // Preloader
-  window.addEventListener("load", () => {
-    document.getElementById("preloader").style.display = "none";
+   if(!user) {
+  loginMsg.textContent = 'Account not found. Please sign up first.';
+  return;
+}
+
+    if(user.password !== password) {
+      loginMsg.textContent = 'Incorrect password.';
+      return;
+    }
+
+    // Valid login, generate OTP
+    generatedOTP = generateOTP();
+    console.log('Generated OTP (for demo):', generatedOTP);
+    alert('Your OTP code is: ' + generatedOTP);
+
+    // Show OTP modal & blur background
+    otpModal.style.display = 'block';
+    loginContainer.classList.add('blurred');
+
+    // Clear OTP input and messages
+    otpInput.value = '';
+    otpMsg.textContent = '';
   });
 
-  </script>
+  verifyOtpBtn.addEventListener('click', () => {
+    const enteredOTP = otpInput.value.trim();
+    if(enteredOTP === generatedOTP) {
+      otpMsg.style.color = '#0f0';
+      otpMsg.textContent = 'OTP verified! Logging you in...';
+
+      // Remove blur and hide modal
+      loginContainer.classList.remove('blurred');
+      otpModal.style.display = 'none';
+
+      // Save logged in user in localStorage for dashboard/homepage use
+      const usernameOrEmail = loginForm.usernameOrEmail.value.trim().toLowerCase();
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const user = users.find(u => u.username.toLowerCase() === usernameOrEmail || u.email.toLowerCase() === usernameOrEmail);
+
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+      // Welcome alert then redirect to homepage
+      alert(`Welcome, ${user.username}! Redirecting to your homepage...`);
+      setTimeout(() => {
+        // Redirect to homepage with username query param
+        window.location.href = `index.html?user=${encodeURIComponent(user.username)}`;
+      }, 2000);
+
+    } else {
+      otpMsg.style.color = '#f33';
+      otpMsg.textContent = 'Invalid OTP. Try again.';
+    }
+  });
+
+</script>
+
 </body>
 </html>
-

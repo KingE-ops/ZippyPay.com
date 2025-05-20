@@ -347,9 +347,203 @@
       }
     }
 
+    /* POPUP STYLES */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(6px);
+}
+
+.popup-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.25);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.popup-box h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.popup-box p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.popup-buttons button {
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#popupYes {
+  background-color: #2ecc71;
+  color: white;
+}
+
+#popupNo {
+  background-color: #e74c3c;
+  color: white;
+}
+
+#popupYes:hover {
+  background-color: #27ae60;
+}
+
+#popupNo:hover {
+  background-color: #c0392b;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+  .glass-section {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 1200px;
+    color: black;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .testimonial-card, .leaderboard-card {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 1rem;
+    margin: 1rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    backdrop-filter: blur(6px);
+  }
+
+  .stars {
+    color: gold;
+    font-size: 1.2rem;
+  }
+
+  .leaderboard-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    display: none;
+  }
+
+  .modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 720px;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .modal-content iframe {
+    width: 100%;
+    height: 400px;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+  }
+
   </style>
 </head>
+
+<!-- POPUP NOTIFICATION -->
+<div id="entryPopup" class="popup-overlay">
+  <div class="popup-box">
+    <h2>Welcome!</h2>
+    <p>Want to sign in now to unlock your dashboard and start earning?</p>
+    <div class="popup-buttons">
+      <button id="popupYes">Yes</button>
+      <button id="popupNo">No</button>
+    </div>
+  </div>
+</div>
+
+
 <body>
+
+  <div id="inactivityWarning" style="
+  display:none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  font-family: Arial, sans-serif;
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+">
+  <div style="background: #222; padding: 30px; border-radius: 8px; max-width: 300px; margin: auto;">
+    <p style="font-size: 18px; margin-bottom: 20px;">
+      You will be logged out soon due to inactivity.<br>
+      Stay logged in?
+    </p>
+    <button id="stayLoggedInBtn" style="
+      padding: 10px 20px;
+      background: #4CAF50;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    ">Stay Logged In</button>
+  </div>
+</div>
+
 
 <!-- Preloader -->
 <div id="preloader">
@@ -377,6 +571,11 @@
     <a href="#earn">Earnings</a>
     <a href="#proof">Proof</a>
     <a href="./task.html">Task</a>
+      <button id="logoutBtn" style="cursor:pointer;
+      color: green;
+      border: none;
+      background-color: white;
+      ">Logout</button>
 
   </nav>
 </header>
@@ -529,6 +728,55 @@
       </footer>
     </article>
   </div>
+
+  
+<!-- 💎 Section: Testimonials -->
+<div class="glass-section">
+  <div class="section-title">What Users Are Saying</div>
+  <div class="testimonial-card">
+    <p>“This platform is amazing! I earned my first bonus within hours.”</p>
+    <div>- Jane Doe</div>
+    <div class="stars">★★★★★</div>
+  </div>
+  <div class="testimonial-card">
+    <p>“Simple and effective, highly recommend to new users!”</p>
+    <div>- John Smith</div>
+    <div class="stars">★★★★☆</div>
+  </div>
+</div>
+
+<!-- 🏆 Section: Leaderboard -->
+<div class="glass-section">
+  <div class="section-title">Top Earners Today</div>
+  <div class="leaderboard-card">
+    <div><strong>Mary K.</strong></div>
+    <div>$75</div>
+  </div>
+  <div class="leaderboard-card">
+    <div><strong>Chris P.</strong></div>
+    <div>$66</div>
+  </div>
+  <div class="leaderboard-card">
+    <div><strong>Linda Z.</strong></div>
+    <div>$58</div>
+  </div>
+</div>
+
+<!-- 🎥 Section: Explainer Video -->
+<div class="glass-section">
+  <div class="section-title">How It Works</div>
+  <button onclick="showVideoModal()" style="padding: 0.7rem 1.5rem; font-size: 1rem; border-radius: 10px; background: #fff; color: #333;">▶️ Watch Video</button>
+</div>
+
+<!-- 🎬 Modal Video Popup -->
+<div id="videoModal" class="modal-overlay">
+  <div class="modal-content">
+    <span class="modal-close" onclick="hideVideoModal()">&times;</span>
+    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+  </div>
+</div>
+
+
 <!-- Footer -->
 <footer>
   &copy; 2025 ZippyPay. All Rights Reserved.
@@ -540,7 +788,11 @@
     <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/yJg-Y5byMMw?si=K7WbELmtgqOKUxEd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
 </div>
 
+
 <!-- Script -->
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 <script>
   // Preloader
   window.addEventListener("load", () => {
@@ -564,18 +816,18 @@
   window.addEventListener('scroll', showSections);
   showSections();
 
-   function toggleFAQ(element) {
-      const isActive = element.classList.contains('active');
-      // Close all
-      document.querySelectorAll('.faq-box.active').forEach(box => {
-        box.classList.remove('active');
-        box.setAttribute('aria-expanded', 'false');
-      });
-      if (!isActive) {
-        element.classList.add('active');
-        element.setAttribute('aria-expanded', 'true');
-      }
+  function toggleFAQ(element) {
+    const isActive = element.classList.contains('active');
+    // Close all
+    document.querySelectorAll('.faq-box.active').forEach(box => {
+      box.classList.remove('active');
+      box.setAttribute('aria-expanded', 'false');
+    });
+    if (!isActive) {
+      element.classList.add('active');
+      element.setAttribute('aria-expanded', 'true');
     }
+  }
 
   function toggleMenu() {
     document.getElementById('nav').classList.toggle('active');
@@ -588,41 +840,139 @@
   }
 
   document.querySelectorAll('#nav a').forEach(link => {
-  link.addEventListener('click', () => {
-    document.getElementById('nav').classList.remove('active');
+    link.addEventListener('click', () => {
+      document.getElementById('nav').classList.remove('active');
+    });
   });
-});
 
-function isLoggedIn() {
-  // Adjust based on your actual login check (cookie, localStorage, token...)
-  return localStorage.getItem('loggedInUser') !== null;
-}
+  document.addEventListener("DOMContentLoaded", () => {
+    const popup = document.getElementById("entryPopup");
+    const btnYes = document.getElementById("popupYes");
+    const btnNo = document.getElementById("popupNo");
 
-window.addEventListener('load', () => {
-  if (!isLoggedIn()) {
-    setTimeout(() => {
-      // Redirect to login page with "redirect" param as current page URL
-      const currentUrl = encodeURIComponent(window.location.href);
-      window.location.href = `/login.html?redirect=${currentUrl}`;
-    }, 10000); // 10 seconds
+    const popupSeen = localStorage.getItem("popupSeen");
+
+    // Show popup only if not seen
+    if (!popupSeen) {
+      popup.style.display = "flex";
+    }
+
+    function launchConfetti() {
+      try {
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 },
+        });
+      } catch (e) {
+        console.error("Confetti error:", e);
+      }
+    }
+
+    btnYes.addEventListener("click", () => {
+      try {
+        launchConfetti();
+        localStorage.setItem("popupSeen", "true");
+
+        // Delay redirect slightly for confetti effect to be visible
+        setTimeout(() => {
+          window.location.href = "login.html"; // Update if your login page URL differs
+        }, 1200);
+
+      } catch (err) {
+        console.error("Error on Yes click:", err);
+        // Even if error, redirect anyway
+        window.location.href = "login.html";
+      }
+    });
+
+    btnNo.addEventListener("click", () => {
+      popup.style.display = "none";
+      setTimeout(() => {
+        if (!localStorage.getItem("popupSeen")) {
+          popup.style.display = "flex";
+        }
+      }, 5000);
+    });
+  });
+
+  // Updated logout button handler:
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    // Remove only login/session-related keys — update these to your actual login keys:
+    localStorage.removeItem("popupSeen");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userToken");
+    // Add/remove keys here as needed for your login/session data
+
+    // Redirect to homepage after logout
+    window.location.href = "index.html"; // Update if your homepage URL differs
+  });
+
+  (() => {
+  const warningPopup = document.getElementById("inactivityWarning");
+  const stayBtn = document.getElementById("stayLoggedInBtn");
+
+  // Time constants in milliseconds
+  const INACTIVITY_LIMIT = 14 * 60 * 100; // 14 minutes
+  const LOGOUT_DELAY = 1 * 60 * 1000; // 1 minute after warning
+
+  let inactivityTimer;
+  let logoutTimer;
+
+  // Reset timers & hide warning popup
+  function resetTimers() {
+    if (warningPopup.style.display === "flex") {
+      warningPopup.style.display = "none";
+    }
+    clearTimeout(inactivityTimer);
+    clearTimeout(logoutTimer);
+
+    inactivityTimer = setTimeout(showWarning, INACTIVITY_LIMIT);
   }
-});
 
-// After login success
-function onLoginSuccess(username) {
-  // Save login state
-  localStorage.setItem('loggedInUser', username);
+  // Show warning popup & start logout timer
+  function showWarning() {
+    warningPopup.style.display = "flex";
 
-  // Get redirect URL from query params
-  const params = new URLSearchParams(window.location.search);
-  const redirectUrl = params.get('redirect') || '/';
+    logoutTimer = setTimeout(() => {
+      // Perform logout action
+      localStorage.removeItem("popupSeen"); // if you want popup to show next time
+      // Clear login info here, update as needed:
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("username");
+      // Redirect to safe page after logout
+      window.location.href = "index.html";
+    }, LOGOUT_DELAY);
+  }
 
-  // Redirect back to original page
-  window.location.href = redirectUrl;
-}
+  // User activity detected
+  function activityDetected() {
+    resetTimers();
+  }
 
+  stayBtn.addEventListener("click", () => {
+    resetTimers();
+  });
 
+  // Listen to user activity events to reset timer
+  ["click", "mousemove", "keydown", "scroll", "touchstart"].forEach(event => {
+    window.addEventListener(event, activityDetected);
+  });
+
+  // Start timers when page loads
+  resetTimers();
+})();
+
+  // Modal Logic
+  function showVideoModal() {
+    document.getElementById("videoModal").style.display = "flex";
+  }
+
+  function hideVideoModal() {
+    document.getElementById("videoModal").style.display = "none";
+  }
 
 </script>
+
 </body>
 </html>

@@ -283,7 +283,6 @@
     display: none;
 }
 
-style>
     .testimonial-container {
       max-width: 1100px;
       margin: 0 auto;
@@ -347,6 +346,7 @@ style>
         height: 40px;
       }
     }
+
   </style>
 </head>
 <body>
@@ -377,6 +377,7 @@ style>
     <a href="#earn">Earnings</a>
     <a href="#proof">Proof</a>
     <a href="./task.html">Task</a>
+
   </nav>
 </header>
 
@@ -592,8 +593,36 @@ style>
   });
 });
 
+function isLoggedIn() {
+  // Adjust based on your actual login check (cookie, localStorage, token...)
+  return localStorage.getItem('loggedInUser') !== null;
+}
 
-  
+window.addEventListener('load', () => {
+  if (!isLoggedIn()) {
+    setTimeout(() => {
+      // Redirect to login page with "redirect" param as current page URL
+      const currentUrl = encodeURIComponent(window.location.href);
+      window.location.href = `/login.html?redirect=${currentUrl}`;
+    }, 10000); // 10 seconds
+  }
+});
+
+// After login success
+function onLoginSuccess(username) {
+  // Save login state
+  localStorage.setItem('loggedInUser', username);
+
+  // Get redirect URL from query params
+  const params = new URLSearchParams(window.location.search);
+  const redirectUrl = params.get('redirect') || '/';
+
+  // Redirect back to original page
+  window.location.href = redirectUrl;
+}
+
+
+
 </script>
 </body>
 </html>

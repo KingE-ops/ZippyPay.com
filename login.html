@@ -251,10 +251,10 @@
       localStorage.setItem('loggedInUser', JSON.stringify(user));
 
       // Welcome alert then redirect to homepage
-      alert(`Welcome, ${user.username}! Redirecting to your homepage...`);
+      alert(`Welcome to zippy pay, ${user.username}! Redirecting you in a seconds...`);
       setTimeout(() => {
         // Redirect to homepage with username query param
-        window.location.href = `index.html?user=${encodeURIComponent(user.username)}`;
+        window.location.href = `task.html?user=${encodeURIComponent(user.username)}`;
       }, 2000);
 
     } else {
@@ -262,6 +262,23 @@
       otpMsg.textContent = 'Invalid OTP. Try again.';
     }
   });
+
+
+// Example login function (replace with your real auth logic)
+function loginUser() {
+  const usernameInput = document.getElementById('username').value.trim();
+
+  if (usernameInput === '') {
+    alert('Please enter your username.');
+    return;
+  }
+
+  // Simulate successful login (add your real auth logic here)
+  localStorage.setItem('currentUser', usernameInput.toLowerCase());
+
+  // Redirect to tasks page after login
+  window.location.href = 'tasks.html'; // adjust filename if needed
+}
 
 </script>
 

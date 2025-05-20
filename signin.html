@@ -184,6 +184,18 @@
     document.getElementById("preloader").style.display = "none";
   });
 
+  // Example (your actual code might differ):
+function handleSignup(event) {
+  event.preventDefault();
+  // ... your sign-up logic ...
+
+  // On successful signup:
+  localStorage.setItem('currentUser', userEmailOrUsername);
+
+  // Add this line to redirect to task page:
+  window.location.href = 'task.html';  // <-- Add this line here
+}
+
   </script>
 </body>
 </html>

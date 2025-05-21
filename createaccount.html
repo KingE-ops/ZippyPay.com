@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Log In - Premium</title>
+<title>Create Account - Premium</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
   body {
@@ -34,7 +34,7 @@
     font-weight: 600;
     font-size: 0.9rem;
   }
-  input[type="text"], input[type="password"] {
+  input[type="text"], input[type="email"], input[type="password"] {
     width: 100%;
     padding: 12px 14px;
     border-radius: 10px;
@@ -48,7 +48,7 @@
     background: rgba(255,255,255,0.15);
     color: #fff;
   }
-  input[type="text"]:focus, input[type="password"]:focus {
+  input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
     box-shadow: 0 0 8px 2px #a18cd1;
   }
   .password-toggle {
@@ -63,6 +63,16 @@
     user-select: none;
     font-size: 0.9rem;
   }
+  .password-strength {
+    font-size: 0.8rem;
+    margin-top: -14px;
+    margin-bottom: 16px;
+    height: 18px;
+    font-weight: 600;
+  }
+  .strength-weak { color: #ff4d4d; }
+  .strength-medium { color: #ffa500; }
+  .strength-strong { color: #32cd32; }
   button {
     width: 100%;
     padding: 14px;
@@ -87,6 +97,9 @@
   .error {
     color: #ff4d4d;
   }
+  .success {
+    color: #32cd32;
+  }
   .login-link {
     margin-top: 24px;
     font-size: 0.9rem;
@@ -101,7 +114,7 @@
     text-decoration: underline;
   }
 
-      /* Preloader */
+        /* Preloader */
     #preloader {
       position: fixed; width: 100%; height: 100vh; background: rgba(255, 255, 255, 0.365); display: flex;
       backdrop-filter: blur(5px);
@@ -118,9 +131,9 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-20px); }
     }
-
 </style>
 </head>
+
 
 
 <!-- Preloader -->
@@ -137,31 +150,40 @@
   </div>
 </div>
 <body>
+<body>
 
 <div class="container">
-  <h2>Log In</h2>
-  <form id="loginForm" novalidate>
+  <h2>Create Account</h2>
+  <form id="createAccountForm" novalidate>
     <label for="username">Username</label>
     <input type="text" id="username" autocomplete="username" required placeholder="Enter username" />
     
+    <label for="email">Email</label>
+    <input type="email" id="email" autocomplete="email" required placeholder="Enter email" />
+    
     <label for="password">Password</label>
     <div class="password-toggle">
-      <input type="password" id="password" autocomplete="current-password" required placeholder="Enter password" />
+      <input type="password" id="password" autocomplete="new-password" required placeholder="Enter password" />
       <span class="toggle-btn" id="togglePassword">Show</span>
     </div>
+    <div class="password-strength" id="passwordStrength"></div>
     
-    <button type="submit">Log In</button>
+    <label for="confirmPassword">Confirm Password</label>
+    <input type="password" id="confirmPassword" autocomplete="new-password" required placeholder="Confirm password" />
+    
+    <button type="submit">Create Account</button>
     <div class="message" id="formMessage"></div>
   </form>
   <div class="login-link">
-    Don't have an account? <a href="createaccount.html">Create one</a>
+    Already have an account? <a href="login.html">Log In</a>
   </div>
 </div>
 
 <script>
   const passwordInput = document.getElementById('password');
   const togglePasswordBtn = document.getElementById('togglePassword');
-  const form = document.getElementById('loginForm');
+  const passwordStrength = document.getElementById('passwordStrength');
+  const form = document.getElementById('createAccountForm');
   const formMessage = document.getElementById('formMessage');
 
   // Toggle password visibility
@@ -175,54 +197,99 @@
     }
   });
 
-  // Same simple hash function from Create Account page
+  // Simple password strength checker
+  passwordInput.addEventListener('input', () => {
+    const val = passwordInput.value;
+    let strength = '';
+    if (val.length < 6) {
+      strength = 'Too short';
+      passwordStrength.className = 'password-strength strength-weak';
+    } else if (val.match(/[A-Z]/) && val.match(/[0-9]/) && val.length >= 8) {
+      strength = 'Strong';
+      passwordStrength.className = 'password-strength strength-strong';
+    } else {
+      strength = 'Medium';
+      passwordStrength.className = 'password-strength strength-medium';
+    }
+    passwordStrength.textContent = strength;
+  });
+
+  // Simple hash function (not for production security!)
   function simpleHash(str) {
     let hash = 0;
     for(let i=0; i < str.length; i++) {
       hash = (hash << 5) - hash + str.charCodeAt(i);
-      hash |= 0;
+      hash |= 0; // Convert to 32bit integer
     }
     return hash.toString();
   }
 
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
     formMessage.textContent = '';
     formMessage.className = 'message';
 
     const username = form.username.value.trim();
+    const email = form.email.value.trim();
     const password = form.password.value;
+    const confirmPassword = form.confirmPassword.value;
 
-    if(!username || !password) {
+    if (!username || !email || !password || !confirmPassword) {
       formMessage.textContent = 'Please fill all fields.';
       formMessage.classList.add('error');
       return;
     }
 
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const hashedPassword = simpleHash(password);
-    const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === hashedPassword);
-
-    if(!user) {
-      formMessage.textContent = 'Invalid username or password.';
+    // Basic email regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRegex.test(email)) {
+      formMessage.textContent = 'Please enter a valid email.';
       formMessage.classList.add('error');
       return;
     }
 
-    // Save current user in localStorage
-    localStorage.setItem('currentUser', user.username);
+    if(password !== confirmPassword) {
+      formMessage.textContent = 'Passwords do not match.';
+      formMessage.classList.add('error');
+      return;
+    }
 
-    formMessage.textContent = 'Login successful! Redirecting...';
-    formMessage.classList.remove('error');
-    formMessage.style.color = '#32cd32';
+    if(password.length < 6) {
+      formMessage.textContent = 'Password should be at least 6 characters.';
+      formMessage.classList.add('error');
+      return;
+    }
 
-    // Redirect to task page (change as needed)
+    // Check if username or email already exists
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    if(users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+      formMessage.textContent = 'Username already taken.';
+      formMessage.classList.add('error');
+      return;
+    }
+    if(users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+      formMessage.textContent = 'Email already registered.';
+      formMessage.classList.add('error');
+      return;
+    }
+
+    // Save new user
+    users.push({
+      username,
+      email,
+      password: simpleHash(password)
+    });
+    localStorage.setItem('users', JSON.stringify(users));
+
+    formMessage.textContent = 'Account created! Redirecting to login...';
+    formMessage.classList.add('success');
+
     setTimeout(() => {
-      window.location.href = 'index.html';
-    }, 1500);
+      window.location.href = 'login.html';
+    }, 2000);
   });
 
-    window.addEventListener("load", () => {
+      window.addEventListener("load", () => {
     document.getElementById("preloader").style.display = "none";
   });
 

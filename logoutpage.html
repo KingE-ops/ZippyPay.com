@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+     <style>
+
+           * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+    body { background: #fff; color: #191717; overflow-x: hidden;
+     }
+        .header h1{
+            color: rgba(78, 10, 143, 0.639);
+            font-size: 40px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .welcome{
+            /* padding: 30px; */
+            text-align: center;
+        }
+
+        .welcome h1{
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 30px;
+            color: rgba(128, 0, 128, 0.591);
+        }
+
+        .welcome h3 a{
+            font-size: 15px;
+            font-weight: 300;
+            text-decoration: none;
+            color: rgb(184, 181, 181);
+        }
+
+        .welcome a:hover{
+            text-decoration: underline;
+        }
+
+       @media (max-width: 480px) {
+        .welcome h1{
+            padding-top: 100px;
+            font-size: 15px;
+            margin: 0;
+        }
+    }
+
+    
+        /* Preloader */
+    #preloader {
+      position: fixed; width: 100%; height: 100vh; background: rgba(255, 255, 255, 0.365); display: flex;
+      backdrop-filter: blur(5px);
+      align-items: center; justify-content: center; z-index: 9999;
+    }
+    .loader span {
+      position: relative;
+       bottom: 10px;
+      font-size: 30px; color: black; animation: bounce 1s infinite;
+      display: inline-block; margin: 0 5px;
+      animation-delay: calc(0.1s * var(--i));
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .slow{
+        display: none;
+    }
+
+</style>
+
+</head>
+
+
+<!-- Preloader -->
+<div id="preloader">
+  <div class="loader">
+    <span style="--i:1">Z</span>
+    <span style="--i:2">I</span>
+    <span style="--i:3">P</span>
+    <span style="--i:4">P</span>
+    <span style="--i:5">Y</span>
+    <span style="--i:6">P</span>
+    <span style="--i:7">A</span>
+    <span style="--i:8">Y</span>
+  </div>
+</div>
+
+
+<body>
+    <div class="header">
+        <h1>
+            ZIPPY-PAY
+        </h1>
+    </div>
+
+    <div class="welcome">
+        <h1>
+            Your'e logged out of your account click here to
+        </h1>
+
+        <br>
+        <br>
+
+        <h3>
+            <a href="./login.html">Log back in</a>
+        </h3>
+    </div>
+
+    <div class="slow">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/yJg-Y5byMMw?si=K7WbELmtgqOKUxEd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+    <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/yJg-Y5byMMw?si=K7WbELmtgqOKUxEd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+</div>
+
+    <script>
+        
+      window.addEventListener("load", () => {
+    document.getElementById("preloader").style.display = "none";
+  });
+
+    </script>
+</body>
+</html>

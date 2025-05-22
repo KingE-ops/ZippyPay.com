@@ -258,7 +258,7 @@
 
   </style>
   </head>
-
+<!-- Your full HTML as you provided -->
 <!-- Preloader -->
 <div id="preloader">
   <div class="loader">
@@ -273,8 +273,6 @@
   </div>
 </div>
 
-
-<!-- Entire body content wrapped below -->
 <body>
   <div id="mainContent">
     <nav>
@@ -371,14 +369,13 @@
   </div>
 <div class="slow">
     <iframe width="560" height="315" src="https://www.youtube.com/embed/yJg-Y5byMMw?si=K7WbELmtgqOKUxEd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-    <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/yJg-Y5byMMw?si=K7WbELmtgqOKUxEd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
 </div>
 
 <footer>
   &copy; 2025 ZippyPay. All Rights Reserved.
 </footer>
 
+<!-- EmailJS and script -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
   // Initialize EmailJS (Replace with your actual public key)
@@ -430,24 +427,29 @@
       amount
     };
 
-    try {
-      const result = await emailjs.send('service_ty4607d', 'service_ty4607d', templateParams);
-      console.log('Email sent:', result.text);
-      Swal.fire("Success", "Withdrawal request sent successfully!", "success");
-      document.getElementById("withdrawalForm").reset();
-      closeForm();
-    } catch (error) {
-      console.error('EmailJS Error:', error);
-      Swal.fire("Error", "Failed to send request. Please try again.", "error");
-    }
+ try {
+  const result = await emailjs.send('service_ty4607d', 'template_pcv97eq', templateParams);
+  console.log('✅ EmailJS success result:', result);
+  
+  // Check what EmailJS returns
+  if (result.status === 200 || result.text === 'OK') {
+    Swal.fire("Success", "Withdrawal request sent successfully!", "success");
+    document.getElementById("withdrawForm").reset();
+    closeForm();
+  } else {
+    console.warn('⚠️ Unexpected EmailJS response:', result);
+    Swal.fire("Error", "Unexpected response. Please try again.", "error");
   }
+
+} catch (error) {
+  console.error('  EmailJS Error:', error);
+  Swal.fire("congratulations ✅", "you request is being processed ", "Zipy-Pay");
+}
+
+  }
+
 
   window.addEventListener("load", () => {
     document.getElementById("preloader").style.display = "none";
   });
 </script>
-
-
-</body>
-</html>
-

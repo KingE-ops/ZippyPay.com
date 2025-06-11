@@ -1,19 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Sign Up</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Premium Sign Up</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+
+    .signup-container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px 30px;
+      width: 90%;
+      max-width: 400px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+      text-align: center;
+    }
+
+    .signup-container h2 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input {
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #00c6ff;
+      background: linear-gradient(to right, #0072ff, #00c6ff);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 15px rgba(0, 198, 255, 0.4);
+    }
+
+    .alt-link {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .alt-link a {
+      color: #00c6ff;
+      text-decoration: none;
+    }
+
+    .alt-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-  <h2>Create Account</h2>
-
-  <!-- ✅ Wrap in a form and give it the correct ID -->
-  <form id="signUpForm">
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="password" id="password" placeholder="Password" required />
-    <input type="phone" id="phone" placeholder="phone-number" required />
-    <button type="submit" id="signupBtn">Sign Up</button>
-    <button><a href="./login.html">log in</a></button>
-  </form>
+  <div class="signup-container">
+    <h2>Create Account</h2>
+    <form id="signUpForm">
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="tel" id="phone" placeholder="Phone Number" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Sign Up</button>
+    </form>
+    <div class="alt-link">
+      Already have an account? <a href="login.html">Log in</a>
+    </div>
+  </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -23,28 +107,30 @@
       apiKey: "AIzaSyCMmNGkmxYPlxI30GK-KtMh5_2N1MqtNIE",
       authDomain: "zippy-d50e1.firebaseapp.com",
       projectId: "zippy-d50e1",
-      storageBucket: "zippy-d50e1.appspot.com", // ✅ CORRECTED HERE
+      storageBucket: "zippy-d50e1.appspot.com",
       messagingSenderId: "263502479083",
       appId: "1:263502479083:web:e06bd09862d1c5a65ec8ae",
       measurementId: "G-WED5CKK2XE"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // ✅ Add listener to the form
     const signUpForm = document.getElementById('signUpForm');
     signUpForm.addEventListener('submit', (e) => {
       e.preventDefault();
+
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
+      const name = document.getElementById('name').value;
       const phone = document.getElementById('phone').value;
 
-      createUserWithEmailAndPassword(auth, email, password, phone)
+      createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
+          // You can optionally store additional info in Firestore later
           console.log("User created:", userCredential.user);
-          window.location.href = "login.html"; // or dashboard.html if you prefer
+          alert("Account created successfully!");
+          window.location.href = "login.html";
         })
         .catch((error) => {
           alert("Signup error: " + error.message);

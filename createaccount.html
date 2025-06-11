@@ -4,7 +4,22 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Create Account - Premium</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+</script>
 <style>
+  
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
   body {
     margin: 0; padding: 0;
@@ -131,11 +146,11 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-20px); }
     }
+
 </style>
 </head>
 
-
-
+<body>
 <!-- Preloader -->
 <div id="preloader">
   <div class="loader">
@@ -149,28 +164,26 @@
     <span style="--i:8">Y</span>
   </div>
 </div>
-<body>
-<body>
 
 <div class="container">
   <h2>Create Account</h2>
   <form id="createAccountForm" novalidate>
     <label for="username">Username</label>
-    <input type="text" id="username" autocomplete="username" required placeholder="Enter username" />
-    
+    <input type="text" id="username" required placeholder="Enter username" />
+
     <label for="email">Email</label>
-    <input type="email" id="email" autocomplete="email" required placeholder="Enter email" />
-    
+    <input type="email" id="email" required placeholder="Enter email" />
+
     <label for="password">Password</label>
     <div class="password-toggle">
-      <input type="password" id="password" autocomplete="new-password" required placeholder="Enter password" />
+      <input type="password" id="password" required placeholder="Enter password" />
       <span class="toggle-btn" id="togglePassword">Show</span>
     </div>
     <div class="password-strength" id="passwordStrength"></div>
-    
+
     <label for="confirmPassword">Confirm Password</label>
-    <input type="password" id="confirmPassword" autocomplete="new-password" required placeholder="Confirm password" />
-    
+    <input type="password" id="confirmPassword" required placeholder="Confirm password" />
+
     <button type="submit">Create Account</button>
     <div class="message" id="formMessage"></div>
   </form>
@@ -186,7 +199,6 @@
   const form = document.getElementById('createAccountForm');
   const formMessage = document.getElementById('formMessage');
 
-  // Toggle password visibility
   togglePasswordBtn.addEventListener('click', () => {
     if (passwordInput.type === 'password') {
       passwordInput.type = 'text';
@@ -197,7 +209,6 @@
     }
   });
 
-  // Simple password strength checker
   passwordInput.addEventListener('input', () => {
     const val = passwordInput.value;
     let strength = '';
@@ -214,17 +225,7 @@
     passwordStrength.textContent = strength;
   });
 
-  // Simple hash function (not for production security!)
-  function simpleHash(str) {
-    let hash = 0;
-    for(let i=0; i < str.length; i++) {
-      hash = (hash << 5) - hash + str.charCodeAt(i);
-      hash |= 0; // Convert to 32bit integer
-    }
-    return hash.toString();
-  }
-
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     formMessage.textContent = '';
     formMessage.className = 'message';
@@ -240,60 +241,35 @@
       return;
     }
 
-    // Basic email regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(!emailRegex.test(email)) {
-      formMessage.textContent = 'Please enter a valid email.';
+    if (!emailRegex.test(email)) {
+      formMessage.textContent = 'Invalid email format.';
       formMessage.classList.add('error');
       return;
     }
 
-    if(password !== confirmPassword) {
+    if (password !== confirmPassword) {
       formMessage.textContent = 'Passwords do not match.';
       formMessage.classList.add('error');
       return;
     }
 
-    if(password.length < 6) {
-      formMessage.textContent = 'Password should be at least 6 characters.';
+    try {
+      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+      await userCredential.user.updateProfile({ displayName: username });
+      formMessage.textContent = 'Account created successfully. Redirecting to login...';
+      formMessage.classList.add('success');
+      setTimeout(() => window.location.href = 'login.html', 2000);
+    } catch (error) {
+      formMessage.textContent = error.message;
       formMessage.classList.add('error');
-      return;
     }
-
-    // Check if username or email already exists
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    if(users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
-      formMessage.textContent = 'Username already taken.';
-      formMessage.classList.add('error');
-      return;
-    }
-    if(users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-      formMessage.textContent = 'Email already registered.';
-      formMessage.classList.add('error');
-      return;
-    }
-
-    // Save new user
-    users.push({
-      username,
-      email,
-      password: simpleHash(password)
-    });
-    localStorage.setItem('users', JSON.stringify(users));
-
-    formMessage.textContent = 'Account created! Redirecting to login...';
-    formMessage.classList.add('success');
-
-    setTimeout(() => {
-      window.location.href = 'login.html';
-    }, 2000);
   });
 
-      window.addEventListener("load", () => {
+  window.addEventListener("load", () => {
     document.getElementById("preloader").style.display = "none";
   });
-
 </script>
-
 </body>
 </html>
+

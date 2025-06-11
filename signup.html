@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign Up</title>
+</head>
+<body>
+  <h2>Create Account</h2>
+
+  <!-- ✅ Wrap in a form and give it the correct ID -->
+  <form id="signUpForm">
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <input type="phone" id="phone" placeholder="phone-number" required />
+    <button type="submit" id="signupBtn">Sign Up</button>
+    <button><a href="./login.html">log in</a></button>
+  </form>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCMmNGkmxYPlxI30GK-KtMh5_2N1MqtNIE",
+      authDomain: "zippy-d50e1.firebaseapp.com",
+      projectId: "zippy-d50e1",
+      storageBucket: "zippy-d50e1.appspot.com", // ✅ CORRECTED HERE
+      messagingSenderId: "263502479083",
+      appId: "1:263502479083:web:e06bd09862d1c5a65ec8ae",
+      measurementId: "G-WED5CKK2XE"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // ✅ Add listener to the form
+    const signUpForm = document.getElementById('signUpForm');
+    signUpForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const phone = document.getElementById('phone').value;
+
+      createUserWithEmailAndPassword(auth, email, password, phone)
+        .then((userCredential) => {
+          console.log("User created:", userCredential.user);
+          window.location.href = "login.html"; // or dashboard.html if you prefer
+        })
+        .catch((error) => {
+          alert("Signup error: " + error.message);
+        });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zippy Withdrawal Center</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #e0f7ff, #f0faff);
+      color: #333;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    header {
+      background: #00aaff;
+      padding: 20px 40px;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.8em;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 100px 20px;
+      background: linear-gradient(to bottom right, #d0f0ff, #e6fbff);
+    }
+
+    .hero h2 {
+      font-size: 2.5em;
+      margin-bottom: 15px;
+      color: #00aaff;
+    }
+
+    .hero p {
+      font-size: 1.1em;
+      max-width: 600px;
+      margin: auto;
+      color: #444;
+    }
+
+    .proceed-btn {
+      margin-top: 30px;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      background: #00aaff;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .proceed-btn:hover {
+      background: #0093cc;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .form-card {
+      background: white;
+      padding: 40px;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      transform: scale(0.9);
+      transition: transform 0.3s ease-in-out;
+      position: relative;
+    }
+
+    .form-card h3 {
+      color: #00aaff;
+      font-size: 1.6em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-card label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .form-card input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1em;
+    }
+
+    .form-card button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 14px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 10px;
+      background: #00aaff;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .form-card button:hover {
+      background: #0093cc;
+    }
+
+    .cancel-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: #f44336;
+      border: none;
+      color: white;
+      font-size: 1em;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Zippy Pay</h1>
+    <span>Welcome Back</span>
+  </header>
+
+  <section class="hero">
+    <h2>Withdraw your Earnings with Confidence</h2>
+    <p>Experience instant, secure, and smart withdrawals directly to your bank account. Let’s keep it simple and sleek.</p>
+    <button class="proceed-btn" onclick="showForm()">Proceed to Withdrawal</button>
+  </section>
+
+  <div class="overlay" id="withdrawOverlay">
+    <div class="form-card">
+      <button class="cancel-btn" onclick="hideForm()">Cancel</button>
+      <h3>Withdrawal Request Form</h3>
+      <form id="withdrawForm">
+        <label>Full Name</label>
+        <input type="text" name="fullname" required />
+
+        <label>Phone Number</label>
+        <input type="tel" name="phone" required />
+
+        <label>Date of Birth</label>
+        <input type="date" name="dob" required />
+
+        <label>Account Name</label>
+        <input type="text" name="account_name" required />
+
+        <label>Account Number</label>
+        <input type="number" name="account_number" required />
+
+        <label>Bank Name</label>
+        <input type="text" name="bank_name" required />
+
+        <label>Amount</label>
+        <input type="number" name="amount" required />
+
+        <button type="submit">Submit Withdrawal</button>
+        <div class="message" id="statusMsg"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function showForm() {
+      document.getElementById("withdrawOverlay").style.display = "flex";
+      document.querySelector(".form-card").style.transform = "scale(1)";
+    }
+
+    function hideForm() {
+      document.getElementById("withdrawOverlay").style.display = "none";
+      document.querySelector(".form-card").style.transform = "scale(0.9)";
+    }
+
+    document.getElementById("withdrawForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const statusMsg = document.getElementById("statusMsg");
+      const data = new FormData(form);
+
+      const template = `\nFull Name: ${data.get("fullname")}\nPhone Number: ${data.get("phone")}\nDate of Birth: ${data.get("dob")}\nAccount Name: ${data.get("account_name")}\nAccount Number: ${data.get("account_number")}\nBank Name: ${data.get("bank_name")}\nAmount: ₦${data.get("amount")}`;
+
+      statusMsg.style.color = "#00aaff";
+      statusMsg.innerText = "Sending...";
+
+      // Simulated send delay (replace with actual email service if needed)
+      setTimeout(() => {
+        console.log("Sent Email:", template);
+        statusMsg.innerText = "✅ Withdrawal request sent successfully!";
+        statusMsg.style.color = "green";
+        form.reset();
+      }, 2000);
+    });
+  </script>
+
+</body>
+</html>

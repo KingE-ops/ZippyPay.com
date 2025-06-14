@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zippy Tasks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      background-color: #ffffff;
+      color: #2e004f;
+    }
+
+     body::-webkit-scrollbar{
+      display: none;
+    }
+    /* header {
+      background: #6c4eb6;
+      padding: 1rem 2rem;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    } */
+    /* .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .menu {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+    } */
+    /* .hamburger {
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: none;
+    } */
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      color: #6c4eb6;
+      margin-bottom: 0.5rem;
+    }
+    .hero p {
+      color: #555;
+    }
+
+       header {
+      background: #ffffff82; position: sticky; top: 0; z-index: 1000;
+      backdrop-filter: blur(15px);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 5%; box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    }
+    .logo { font-size: 24px; font-weight: 800; color: #111; }
+    nav { display: flex; gap: 20px; }
+    nav a {
+      color: #444; text-decoration: none; font-weight: 600;
+      transition: 0.3s;
+    }
+    nav a:hover { color: #007bff; }
+    .hamburger {
+      display: none; cursor: pointer; flex-direction: column; gap: 5px;
+    }
+    .hamburger div {
+      width: 25px; height: 3px; background: #333;
+    }
+
+    /* Responsive Nav */
+    @media (max-width: 768px) {
+      nav { position: absolute; top: 75px; right: 5%; background: #fff; flex-direction: column; width: 200px; display: none; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 10px;}
+      nav.active { display: flex; }
+      .hamburger { display: flex; }
+    }
+
+    .container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    #taskContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .task-card {
+      background: #f9f9f9;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(75, 0, 130, 0.1);
+    }
+    .task-card h3 {
+      margin-bottom: 1rem;
+    }
+    .task-card button {
+      padding: 0.6rem 1rem;
+      background-color: #4b0082;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .task-card button:disabled {
+      background-color: grey;
+      cursor: not-allowed;
+    }
+    #usernameDisplay {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #4b0082;
+      margin-bottom: 1rem;
+    }
+    #earningCounter {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #4b0082;
+      margin-bottom: 2rem;
+    }
+    .task-popup {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #4b0082;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      z-index: 1000;
+      animation: fadeInOut 4s ease forwards;
+    }
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(30px); }
+      10% { opacity: 1; transform: translateY(0); }
+      90% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-20px); }
+    }
+
+    
+  /* Testimonials */
+  .testimonial-section {
+    background: linear-gradient(135deg, #553d9a, #7a5edf);
+    color: #fff;
+    padding: 3rem 1rem;
+    text-align: center;
+  }
+  .testimonial-section h2 {
+    font-size: 2.8rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+  }
+  .testimonial-carousel {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    perspective: 1200px;
+  }
+  .testimonial-card {
+    background: #673ab7;
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 300px;
+    box-shadow:
+      0 20px 30px rgba(0, 0, 0, 0.3),
+      inset 0 0 15px rgba(255, 255, 255, 0.1);
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    cursor: default;
+  }
+  .testimonial-card:hover {
+    transform: rotateY(15deg) rotateX(5deg) translateZ(20px);
+    box-shadow:
+      0 30px 50px rgba(0, 0, 0, 0.5),
+      inset 0 0 25px rgba(255, 255, 255, 0.2);
+  }
+  .testimonial-card p {
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+  .testimonial-card h4 {
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 700px) {
+    .testimonial-carousel {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+     /* Info Cards */
+  .info-cards-section {
+    padding: 2rem 1rem;
+    background: #2c1f58;
+    color: #d8cfff;
+    text-align: center;
+  }
+  .info-cards-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  .info-cards {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .info-card {
+    background: #4a3f8e;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 6px 15px rgba(78, 58, 181, 0.5);
+    transition: transform 0.3s ease;
+    cursor: default;
+  }
+  .info-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(78, 58, 181, 0.8);
+  }
+  .info-card h3 {
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    font-size: 1.3rem;
+  }
+  .info-card p {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  
+     footer {
+      background: #f1f1f1; text-align: center;
+      padding: 40px 10%; font-size: 14px; color: #666;
+    }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">ZippyPay</div>
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div><div></div><div></div>
+  </div>
+  <nav id="nav">
+    <a href="./index.html">Home</a>
+    <a href="./withdrawal.html">Withdraw</a>
+    <a href="./profile.html">Profile</a>
+  </nav>
+</header>
+  <section class="hero">
+    <h1>Welcome to zippypay</h1>
+    <p>Complete premium TikTok tasks and earn daily rewards!</p>
+  </section>
+
+  <div class="container">
+    <div class="header">
+      <div id="usernameDisplay">Welcome</div>
+      <div>Earnings: ₦<span id="earningCounter">0</span></div>
+    </div>
+    <div id="taskContainer"></div>
+  </div>
+
+  <section class="info-cards-section">
+  <h2>Frequently Asked Questions</h2>
+  <div class="info-cards">
+    <div class="info-card">
+      <h3>How do I complete a task?</h3>
+      <p>Click on a task, watch the TikTok video, and mark it as completed to earn points.</p>
+    </div>
+    <div class="info-card">
+      <h3>When do tasks reset?</h3>
+      <p>Tasks reset every 24 hours after a new one is uploaded.</p>
+    </div>
+    <div class="info-card">
+      <h3>How do I check my points?</h3>
+      <p>Your current point balance is displayed just above the tasks section.</p>
+    </div>
+    <div class="info-card">
+      <h3>Can I do multiple tasks at once?</h3>
+      <p>You can complete as many tasks as available but each task only once per cycle.</p>
+    </div>
+  </div>
+</section>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+  
+<section class="testimonial-section">
+  <h2>User Testimonials</h2>
+  <div class="testimonial-carousel">
+    <div class="testimonial-card">
+      <p>"Ziipy Pay helped me earn points quickly and the interface is so smooth!"</p>
+      <h4>- Jane D.</h4>
+    </div>
+    <div class="testimonial-card">
+      <p>"The TikTok tasks are fun and easy, plus the 24-hour countdown keeps me coming back daily."</p>
+      <h4>- Michael S.</h4>
+    </div>
+    <div class="testimonial-card">
+      <p>"Love the premium look and smooth navigation. Makes task completion enjoyable."</p>
+      <h4>- Sarah K.</h4>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2025 ZippyPay. All Rights Reserved.
+</footer>
+
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCMmNGkmxYPlxI30GK-KtMh5_2N1MqtNIE",
+      authDomain: "zippy-d50e1.firebaseapp.com",
+      projectId: "zippy-d50e1",
+      storageBucket: "zippy-d50e1.appspot.com",
+      messagingSenderId: "263502479083",
+      appId: "1:263502479083:web:e06bd09862d1c5a65ec8ae"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const taskList = [
+      // { id: "task1", title: "Follow this creator", url: "https://www.tiktok.com/@user1" },
+      // { id: "task2", title: "Like this video", url: "https://www.tiktok.com/@user2/video/123" },
+      // { id: "task3", title: "Comment something nice", url: "https://www.tiktok.com/@user3/video/456" },
+      // { id: "task4", title: "Share this content", url: "https://www.tiktok.com/@user4/video/789" },
+      // { id: "task5", title: "Duet this post", url: "https://www.tiktok.com/@user5/video/234" },
+      { id: "task6", title: "Follow this creator", url: "https://www.tiktok.com/@user1" },
+      { id: "task7", title: "Like this video", url: "https://www.tiktok.com/@user2/video/123" },
+      { id: "task8", title: "Comment something nice", url: "https://www.tiktok.com/@user3/video/456" },
+      { id: "task9", title: "Share this content", url: "https://www.tiktok.com/@user4/video/789" },
+      { id: "task10", title: "Duet this post", url: "https://www.tiktok.com/@user5/video/234" },
+    ];
+
+    let currentUser = null;
+    let completedTasks = [];
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return window.location.href = "login.html";
+      currentUser = user;
+
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        document.getElementById("usernameDisplay").textContent = `Welcome, ${data.name}`;
+        completedTasks = data.completedTasks || [];
+        renderTasks();
+        updateEarnings(data.earnings || 0);
+      }
+    });
+
+    function renderTasks() {
+      const container = document.getElementById("taskContainer");
+      container.innerHTML = "";
+      taskList.forEach(task => {
+        const isDone = completedTasks.includes(task.id);
+        const card = document.createElement("div");
+        card.className = "task-card";
+        card.innerHTML = `
+          <h3>${task.title}</h3>
+          <button ${isDone ? "disabled" : ""} onclick="handleTask('${task.id}', '${task.url}', this)">
+            ${isDone ? "Completed ✅" : "Do Task"}
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.handleTask = async function (taskId, url, btn) {
+      if (completedTasks.includes(taskId)) return;
+      window.open(url, '_blank');
+
+      setTimeout(async () => {
+        completedTasks.push(taskId);
+        btn.disabled = true;
+        btn.textContent = "Completed ✅";
+
+        const userRef = doc(db, "users", currentUser.uid);
+        await updateDoc(userRef, {
+          completedTasks,
+          earnings: increment(100)
+        });
+
+        showPopup("✅ Task Completed", "You earned ₦100!");
+        updateEarnings(+document.getElementById("earningCounter").textContent + 100);
+      }, 2000);
+    }
+
+    function showPopup(title, message) {
+      const popup = document.createElement("div");
+      popup.className = "task-popup";
+      popup.innerHTML = `<h4>${title}</h4><p>${message}</p>`;
+      document.body.appendChild(popup);
+      setTimeout(() => popup.remove(), 4000);
+    }
+
+    function updateEarnings(amount) {
+      document.getElementById("earningCounter").textContent = amount;
+    }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    window.toggleMenu = function () {
+      const nav = document.getElementById("nav");
+      nav.classList.toggle("active");
+    };
+
+    window.closeMenu = function () {
+      const nav = document.getElementById("nav");
+      nav.classList.remove("active");
+    };
+  });
+
+  </script>
+</body>
+</html>

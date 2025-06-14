@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zippy Pay | Support</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #f0faff, #ffffff);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Center Zippy Pay animation */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 20px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: bold;
+      color: #00aaff;
+    }
+
+    .typing-text {
+      font-size: 27px;
+      font-weight: 600;
+      color: #555;
+      height: 50px;
+      overflow: hidden;
+      white-space: nowrap;
+      /* border-right: 3px solid #00aaff; */
+      width: 0;
+      animation: typing 3s steps(20, end) forwards, blink 0.8s infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 310px; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    h2 {
+      color: #00aaff;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      background: #f8f8f8;
+      color: #777;
+    }
+
+    /* ✅ Floating WhatsApp Button */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background-color: #25d366;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      animation: floatUpDown 2.5s ease-in-out infinite;
+      transition: transform 0.3s;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+    }
+
+    .whatsapp-float svg {
+      width: 32px;
+      height: 32px;
+      fill: white;
+    }
+
+    @keyframes floatUpDown {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    a {
+      color: #00aaff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Zippy Pay Title -->
+  <div class="hero">
+    <h1>ZIPPY PAY</h1>
+    <div class="typing-text">Secure. Fast. Reliable.</div>
+  </div>
+
+  <!-- ✅ Main Support Section -->
+  <main>
+    <div class="card">
+      <h2>Support Information</h2>
+      <ul>
+        <li><strong>Invalid Key:</strong> Please ensure the key is correct. Contact us if you need help.</li>
+        <br>
+        <li><strong>Login Trouble:</strong> Try resetting your password or checking credentials.</li>
+        <br>
+        <li><strong>Withdrawal Delay:</strong> Processing may take up to 24 hours. Chat us if it takes longer.</li>
+        <br>
+        <li><strong>Account Questions:</strong> We’re available on WhatsApp during work hours.</li>
+        <br>
+      </ul>
+
+      <br>
+
+      <h2>Contact Us</h2>
+      <p>Email: <a href="mailto:support@zippypay.com">support@zippypay.com</a></p>
+      <br>
+      <p>Live Chat: Tap the green WhatsApp icon to start chatting with us instantly.</p>
+      <br>
+      <p>Hours: Monday to Friday – 9:00 AM to 6:00 PM (WAT)</p>
+      <br>
+    </div>
+  </main>
+
+  <!-- ✅ Footer -->
+  <footer>
+    &copy; 2025 Zippy Pay. All rights reserved.
+  </footer>
+
+  <!-- ✅ WhatsApp Floating Button -->
+  <a href="https://wa.me/2349021475250" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">
+    <svg viewBox="0 0 32 32">
+      <path d="M16 .7C7.7.7.8 7.6.8 16c0 2.8.7 5.4 2 7.7L.2 31.3l7.8-2.5c2.2 1.2 4.7 1.9 7.4 1.9 8.3 0 15.2-6.8 15.2-15.2S24.3.7 16 .7zm0 27.9c-2.3 0-4.5-.6-6.5-1.8l-.5-.3-4.6 1.5 1.5-4.5-.3-.5c-1.2-2-1.8-4.2-1.8-6.5 0-7 5.7-12.7 12.7-12.7s12.7 5.7 12.7 12.7-5.7 12.7-12.7 12.7zm7.2-9.6c-.4-.2-2.3-1.1-2.6-1.2s-.6-.2-.9.2-1.1 1.2-1.4 1.5-.5.3-.9.1c-.4-.2-1.6-.6-3-1.8-1.1-1-1.8-2.2-2-2.6s0-.6.2-.8c.2-.2.4-.4.6-.6.2-.2.3-.3.5-.5.2-.2.2-.3.3-.5.1-.2.1-.4 0-.6s-.9-2.1-1.2-2.9c-.3-.8-.6-.7-.9-.7s-.5 0-.8 0c-.3 0-.6.1-.9.4s-1.2 1.1-1.2 2.7 1.2 3.2 1.3 3.4c.2.3 2.4 3.7 5.9 5.1.8.3 1.4.5 1.9.6.8.2 1.5.2 2.1.1.6-.1 1.8-.7 2.1-1.3s.3-1.2.2-1.3c-.1-.2-.4-.3-.9-.5z"/>
+    </svg>
+  </a>
+
+</body>
+</html>

@@ -510,8 +510,6 @@
     </div>
   </div>
 </div>
-
-
 <body>
 
   <div id="inactivityWarning" style="
@@ -570,7 +568,7 @@
     <a href="#how">How It Works</a>
     <a href="#earn">Earnings</a>
     <a href="#proof">Proof</a>
-    <a href="./task.html">Task</a>
+    <a href="./taskpage.html">Task</a>
       <button id="logoutBtn" style="cursor:pointer;
       color: rgba(255, 0, 0, 0.548);
       border: none;
@@ -579,6 +577,17 @@
 
   </nav>
 </header>
+
+<nav>
+  <span id="userWelcome"   style="position: relative;
+  text-align: center;
+  font-size: 30px;
+  top: 70px;
+  font-weight: 700;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  left: 150px;
+  color: rgba(0, 128, 0, 0.373);">Welcome, </span>
+</nav>
 
 <!-- Hero -->
 <section class="hero">
@@ -788,6 +797,18 @@
     <iframe width="560" height="315" src="https://www.youtube.com/embed/yJg-Y5byMMw?si=K7WbELmtgqOKUxEd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div> -->
 
+<script>
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const auth = getAuth();
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    window.location.href = "login.html";
+  }
+});
+
+</script>
+
 <script type="module">
   // Load Firebase from CDN
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -818,6 +839,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+<script>
+  const userData = JSON.parse(localStorage.getItem("zippyUser"));
+if (userData) {
+  document.getElementById("userWelcome").textContent = `Welcome, ${userData.name}`;
+} else {
+  window.location.href = "login.html"; // force login if no data
+}
+
+</script>
 <script>
   // Preloader
   window.addEventListener("load", () => {
@@ -993,9 +1023,6 @@
     document.getElementById("videoModal").style.display = "flex";
   }
 
-  function hideVideoModal() {
-    document.getElementById("videoModal").style.display = "none";
-  }
 </script>
 
 </body>

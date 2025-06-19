@@ -149,9 +149,9 @@
 
   <div class="login-container">
     <h2>Login</h2>
-    <input id="email" type="email" placeholder="Email" />
-    <input id="password" type="password" placeholder="Password"/>
-    <input id="securityKey" type="text" placeholder="SecurityKey"/>
+    <input id="email" type="email" placeholder="Email" >
+    <input id="password" type="password" placeholder="Password">
+    <input id="securityKey" type="text" placeholder="SecurityKey">
     <button id="loginBtn">Log In</button>
     <div class="forgot-link">
       <a href="#" id="forgotPasswordLink">Forgot Password?</a>
@@ -163,6 +163,16 @@
 
   <!-- ✅ Popup Modal -->
   <div id="customPopup" class="popup hidden">
+    <div class="popup-content">
+      <span id="popupClose" class="popup-close">&times;</span>
+      <div class="popup-icon" id="popupIcon">ℹ️</div>
+      <h2 id="popupTitle">Title</h2>
+      <p id="popupMessage">This is a sample message</p>
+    </div>
+  </div>
+
+  <!-- ✅ Popup Modal -->
+  <div id="customPopupAlert" class="popup hidden">
     <div class="popup-content">
       <span id="popupClose" class="popup-close">&times;</span>
       <div class="popup-icon" id="popupIcon">ℹ️</div>
@@ -226,10 +236,6 @@
       const enteredKey = document.getElementById("securityKey").value.trim();
       const loader = document.getElementById("loader");
 
-      if (!email || !password || !enteredKey) {
-        alert("Please fill in all fields.");
-        return;
-      }
 
       loader.style.display = 'block';
 
@@ -262,7 +268,7 @@
           showCustomPopup("Invalid Key", "Wrong security key. Redirecting to support...", "error");
           setTimeout(() => {
             window.location.href = "support.html";
-          }, 3000);
+          }, 1000);
         }
 
       } catch (error) {

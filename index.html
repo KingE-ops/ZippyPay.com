@@ -6,8 +6,17 @@
   <title>ZippyPay | Earn Instantly</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
-    body { background: #fff; color: #191717; overflow-x: hidden;
+    * {
+       margin: 0;
+       padding: 0; 
+       box-sizing: border-box;
+       font-family: 'Poppins', sans-serif;
+       scroll-behavior: smooth; 
+      }
+    body {
+       background: #a708085e;
+       color: #191717;
+      overflow-x: hidden;
      }
      body::-webkit-scrollbar{
       display: none;
@@ -34,7 +43,8 @@
 
     /* Navbar */
     header {
-      background: #fff; position: sticky; top: 0; z-index: 1000;
+      background: #ffffff82; position: sticky; top: 0; z-index: 1000;
+      backdrop-filter: blur(10px);
       display: flex; justify-content: space-between; align-items: center;
       padding: 20px 5%; box-shadow: 0 2px 15px rgba(0,0,0,0.05);
     }
@@ -496,6 +506,22 @@
     cursor: pointer;
   }
 
+  .popup-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.25);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.popup-box h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: inline;
+}
+
   </style>
 </head>
 
@@ -572,7 +598,7 @@
       <button id="logoutBtn" style="cursor:pointer;
       color: rgba(255, 0, 0, 0.548);
       border: none;
-      background-color: white;
+      background-color: transparent;
       ">Logout</button>
 
   </nav>

@@ -22,41 +22,46 @@
       display: none;
     }
 
-    nav {
-      display: flex; justify-content: space-between;
-      align-items: center; padding: 20px;
-      background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      position: sticky; top: 0; z-index: 10;
-    }
-
-    nav .logo {
-      font-weight: 700; font-size: 1.5rem; color: #1b6ca8;
-    }
-
-    nav .nav-links {
-      display: flex; gap: 20px;
-    }
-
-    nav .nav-links a {
-      text-decoration: none; color: #444;
-      font-weight: 500;
-      cursor: pointer;
-    }
-
-    .hamburger {
-      display: none; font-size: 1.5rem; cursor: pointer;
-    }
-
+    
+    /* Navbar */
     header {
+      background: #ffffff82; position: sticky; top: 0; z-index: 1000;
+      backdrop-filter: blur(10px);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 5%; box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    }
+    .logo { font-size: 24px; font-weight: 800; color: #111; }
+    nav { display: flex; gap: 20px; }
+    nav a {
+      color: #444; text-decoration: none; font-weight: 600;
+      transition: 0.3s;
+    }
+    nav a:hover { color: #007bff; }
+    .hamburger {
+      display: none; cursor: pointer; flex-direction: column; gap: 5px;
+    }
+    .hamburger div {
+      width: 25px; height: 3px; background: #333;
+    }
+
+    /* Responsive Nav */
+    @media (max-width: 768px) {
+      nav { position: absolute; top: 70px; right: 5%; background: #fff; flex-direction: column; width: 200px; display: none; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+      nav.active { display: flex; }
+      .hamburger { display: flex; }
+    }
+
+
+    .head {
       text-align: center; padding: 80px 20px;
       background: linear-gradient(to right, #a1c4fd, #c2e9fb);
     }
 
-    header h1 {
+    .head h1 {
       font-size: 2.5rem;
     }
 
-    header p {
+    .head {
       margin-top: 10px; color: #444;
     }
 
@@ -105,7 +110,7 @@
     .withdraw-form {
       display: none;
       position: absolute;
-      top: 90%; left: 50%;
+      top: 120%; left: 50%;
       transform: translate(-50%, -50%);
       background: rgba(255, 255, 255, 0.95);
       padding: 40px;
@@ -287,41 +292,51 @@
     }
   </style>
   </head>
-<!-- Your full HTML as you provided -->
-<!-- Preloader -->
-<!-- <div id="preloader">
+
+  <!-- Preloader -->
+<div id="preloader">
   <div class="loader">
-    <span style="--i:1">Z</span>
-    <span style="--i:2">I</span>
-    <span style="--i:3">P</span>
-    <span style="--i:4">P</span>
-    <span style="--i:5">Y</span>
-    <span style="--i:6">P</span>
-    <span style="--i:7">A</span>
+    <span style="--i:1">E</span>
+    <span style="--i:2">X</span>
+    <span style="--i:3">X</span>
+    <span style="--i:4">N</span>
+    <span style="--i:5">N</span>
+    <span style="--i:6">I</span> 
+    <span style="--i:7">F</span>
     <span style="--i:8">Y</span>
   </div>
-</div> -->
+</div>
 
 <body>
   <div id="mainContent">
-    <nav>
-      <div class="logo">ZippyPay</div>
-      <div class="nav-links" id="navLinks">
-        <a href="#about" onclick="closeNav()">About</a>
-        <a href="#proofs" onclick="closeNav()">Payments</a>
-        <a href="#tips" onclick="closeNav()">Tips</a>
-        <a href="#testimonials" onclick="closeNav()">Testimonials</a>
-      </div>
-      <div class="hamburger" onclick="toggleNav()">☰</div>
-    </nav>
 
-    <header>
-      <h1>Withdraw Your ZippyPay Earnings</h1>
-      <p>Secure and fast — payments processed within 45 minutes</p>
+    <header>    
+      <div class="logo">EXNIFY..</div>
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div><div></div><div></div>
+  </div>
+  <nav id="nav">
+    <a href="./taskpage.html">Task</a>
+      <button id="logoutBtn" style="cursor:pointer;
+      color: rgba(255, 0, 0, 0.548);
+      border: none;
+      background-color: transparent;
+      ">Logout</button>
+
+  </nav>
     </header>
 
+
+    <br>
+    <br>
+    <br>
+  <div class="head">
+        <h1>Withdraw Your ENIFY Earnings</h1>
+      <p>Secure and fast — payments processed within 45 minutes</p>
+  </div>
+
     <section id="about">
-      <h2>About ZippyPay Withdrawals</h2>
+      <h2>About EXNIFY Withdrawals</h2>
       <p>ZippyPay processes withdrawals within 45 minutes. Minimum withdrawal is ₦5,000. Ensure your details are correct to avoid delays.</p>
     </section>
 
@@ -347,10 +362,12 @@
 
     <section class="testimonials" id="testimonials">
       <h2>User Testimonials</h2>
-      <p>"ZippyPay paid me in 15 minutes, super fast!" – Sarah A.</p>
+      <p>"EXNIFY paid me in 15 minutes, super fast!" – Sarah A.</p>
       <p>"Very reliable platform. I got paid quickly!" – Daniel K.</p>
     </section>
   </div>
+
+
 
   <!-- Withdraw Form (outside the mainContent) -->
   <div class="withdraw-form" id="withdrawForm">
@@ -605,6 +622,11 @@
   Swal.fire("congratulations ✅", "you request is being processed ", "Zipy-Pay");
 }
 
+  }
+
+   // Hamburger menu
+  function toggleMenu() {
+    document.getElementById("nav").classList.toggle("active");
   }
 
 
